@@ -2,13 +2,14 @@ package core
 
 import chisel3._
 import chisel3.util._
+import chisel3.util.log2Up
 
-class ALU extends Module {
+class ALU(c: Config) extends Module {
   val io = IO(new Bundle {
-      val op1 = Input(SInt(32.W)) // First operand
-      val op2 = Input(SInt(32.W)) // Second operand
+      val op1 = Input(SInt(c.xLen.W)) // First operand
+      val op2 = Input(SInt(c.xLen.W)) // Second operand
       val alu_control = Input(UInt(4.W)) // Alu opcode
-      val alu_result = Output(SInt(32.W)) // AlU output
+      val alu_result = Output(SInt(c.xLen.W)) // AlU output
       val zero = Output(Bool()) // Zero flag
   })
 

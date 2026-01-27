@@ -4,12 +4,13 @@ import chisel3._
 import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 
-class ControlTest extends AnyFlatSpec with ChiselScalatestTester {
+class ControlTest() extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "Control Unit"
+  val c = Config()
 
   it should "decode R-Type instructions correctly" in {
     // UPDATED: Use 'Control_Unit' instead of 'Control'
-    test(new Control_Unit) { dut =>
+    test(new Control_Unit(c)) { dut =>
       // R-Type Opcode: 0110011
       // We need a full 32-bit instruction.
       // Example: add x1, x2, x3 -> funct7=0000000, rs2=00011, rs1=00010, funct3=000, rd=00001, opcode=0110011
@@ -30,7 +31,7 @@ class ControlTest extends AnyFlatSpec with ChiselScalatestTester {
   }
 
   it should "decode Load instructions correctly" in {
-    test(new Control_Unit) { dut =>
+    test(new Control_Unit(c)) { dut =>
       // Load Opcode: 0000011 (lw)
       val loadInstr = "b000000000000_00010_010_00001_0000011".U
 
@@ -46,7 +47,7 @@ class ControlTest extends AnyFlatSpec with ChiselScalatestTester {
   }
 
   it should "handle Stall correctly" in {
-    test(new Control_Unit) { dut =>
+    test(new Control_Unit(c)) { dut =>
       // Feed a valid instruction but assert STALL
       val loadInstr = "b000000000000_00010_010_00001_0000011".U
 

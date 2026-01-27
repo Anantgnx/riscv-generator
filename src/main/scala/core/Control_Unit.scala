@@ -2,10 +2,11 @@ package core
 
 import chisel3._
 import chisel3.util._
+import chisel3.util.log2Up
 
-class Control_Unit extends Module {
+class Control_Unit(c: Config) extends Module {
   val io = IO(new Bundle {
-    val instruction = Input(UInt(32.W))
+    val instruction = Input(UInt(c.xLen.W))
     val stall       = Input(Bool())
 
     val ALU_src     = Output(Bool())

@@ -4,11 +4,12 @@ import chisel3._
 import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 
-class ALUTest extends AnyFlatSpec with ChiselScalatestTester {
+class ALUTest() extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "ALU"
+  val c = Config()
 
   it should "perform ADD operation correctly" in {
-    test(new ALU) { dut =>
+    test(new ALU(c)) { dut =>
       // Test 1: 10 + 20 = 30
       // Note: Inputs are SInt (Signed), so we use .S
       dut.io.op1.poke(10.S)
@@ -23,7 +24,7 @@ class ALUTest extends AnyFlatSpec with ChiselScalatestTester {
   }
 
   it should "perform SUB operation correctly" in {
-    test(new ALU) { dut =>
+    test(new ALU(c)) { dut =>
       // Test 2: 20 - 10 = 10
       dut.io.op1.poke(20.S)
       dut.io.op2.poke(10.S)
@@ -37,7 +38,7 @@ class ALUTest extends AnyFlatSpec with ChiselScalatestTester {
   }
 
   it should "assert Zero flag when result is 0" in {
-    test(new ALU) { dut =>
+    test(new ALU(c)) { dut =>
       // Test 3: 10 - 10 = 0
       dut.io.op1.poke(10.S)
       dut.io.op2.poke(10.S)

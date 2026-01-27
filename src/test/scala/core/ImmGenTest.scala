@@ -6,9 +6,10 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class ImmGenTest extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "Immediate Generator"
+  val c = Config()
 
   it should "generate correct immediates for I, S, and B types" in {
-    test(new ImmGen) { dut =>
+    test(new ImmGen(c)) { dut =>
 
       // ---------------------------------------------------------
       // 1. Test I-Type (ADDI)

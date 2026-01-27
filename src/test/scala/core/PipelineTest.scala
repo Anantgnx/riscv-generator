@@ -6,10 +6,11 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class PipelineRegsTest extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "Pipeline Registers"
+  val c = Config()
 
   it should "test IF/ID: handle stall and flush" in {
     // Note: ensure you added 'extends Module' to pipeline_reg_if_id
-    test(new pipeline_reg_if_id) { dut =>
+    test(new pipeline_reg_if_id(c)) { dut =>
       // Initial state
       dut.io.stall.poke(false.B)
       dut.io.flush.poke(false.B)
@@ -37,7 +38,7 @@ class PipelineRegsTest extends AnyFlatSpec with ChiselScalatestTester {
   }
 
   it should "test ID/EX: pass control and data signals" in {
-    test(new pipeline_reg_id_ex) { dut =>
+    test(new pipeline_reg_id_ex(c)) { dut =>
       dut.io.flush.poke(false.B)
       dut.io.pc_in.poke(12.U)
       dut.io.rs1_in.poke(1.U)
@@ -60,7 +61,7 @@ class PipelineRegsTest extends AnyFlatSpec with ChiselScalatestTester {
   }
 
   it should "test EX/MEM: simple cycle delay" in {
-    test(new pipeline_reg_ex_mem) { dut =>
+    test(new pipeline_reg_ex_mem(c)) { dut =>
       dut.io.alu_result_in.poke("hABCD".U)
       dut.io.mem_write_in.poke(true.B)
       dut.io.rd_in.poke(10.U)
@@ -74,7 +75,7 @@ class PipelineRegsTest extends AnyFlatSpec with ChiselScalatestTester {
   }
 
   it should "test MEM/WB: simple cycle delay" in {
-    test(new pipeline_reg_mem_wb) { dut =>
+    test(new pipeline_reg_mem_wb(c)) { dut =>
       dut.io.read_data_in.poke("h1234".U)
       dut.io.reg_write_in.poke(true.B)
 

@@ -6,6 +6,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class InstructionFetchTest extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "Instruction Fetch Stage"
+  val c = Config()
 
   it should "fetch instructions sequentially using Verilator" in {
     // FIX: Add 'VerilatorBackendAnnotation' here
@@ -15,8 +16,8 @@ class InstructionFetchTest extends AnyFlatSpec with ChiselScalatestTester {
         val pc    = Output(UInt(32.W))
       })
 
-      val pc  = Module(new PC())
-      val mem = Module(new InstructionMemory())
+      val pc  = Module(new PC(c))
+      val mem = Module(new InstructionMemory(c))
 
       mem.io.address := pc.io.pc_out
 

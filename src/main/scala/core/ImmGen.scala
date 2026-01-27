@@ -2,11 +2,12 @@ package core
 
 import chisel3._
 import chisel3.util._
+import chisel3.util.log2Up
 
-class ImmGen extends Module {
+class ImmGen(c: Config) extends Module {
   val io = IO(new Bundle {
-    val instr = Input(UInt(32.W))
-    val imm   = Output(UInt(32.W)) // Keeping as UInt to match your Verilog [31:0]
+    val instr = Input(UInt(c.xLen.W))
+    val imm   = Output(UInt(c.xLen.W)) // Keeping as UInt to match your Verilog [31:0]
   })
 
   val opcode = io.instr(6, 0)

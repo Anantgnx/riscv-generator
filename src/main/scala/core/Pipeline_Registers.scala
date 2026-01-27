@@ -1,19 +1,20 @@
 package core
 
 import chisel3._
+import chisel3.util.log2Up
 
-class pipeline_reg_if_id extends Module {
+class pipeline_reg_if_id(c: Config) extends Module {
   val io = IO(new Bundle {
     val stall = Input(Bool())
     val flush = Input(Bool())
-    val pc_in = Input(UInt(32.W))
-    val instruction_in = Input(UInt(32.W))
-    val pc_out = Output(UInt(32.W))
-    val instruction_out = Output(UInt(32.W))
+    val pc_in = Input(UInt(c.xLen.W))
+    val instruction_in = Input(UInt(c.xLen.W))
+    val pc_out = Output(UInt(c.xLen.W))
+    val instruction_out = Output(UInt(c.xLen.W))
   })
 
-  val pc_out_reg = RegInit(0.U(32.W))
-  val instruction_out_reg = RegInit(0.U(32.W))
+  val pc_out_reg = RegInit(0.U(c.xLen.W))
+  val instruction_out_reg = RegInit(0.U(c.xLen.W))
 
   when(io.stall) {
     pc_out_reg := pc_out_reg
@@ -32,16 +33,16 @@ class pipeline_reg_if_id extends Module {
   io.instruction_out := instruction_out_reg
 }
 
-class pipeline_reg_id_ex extends Module {
+class pipeline_reg_id_ex(c: Config) extends Module {
   val io = IO(new Bundle {
     val flush            = Input(Bool())
-    val pc_in            = Input(UInt(32.W))
-    val read_data1_in    = Input(UInt(32.W))
-    val read_data2_in    = Input(UInt(32.W))
-    val sign_ext_imm_in  = Input(UInt(32.W))
-    val rd_in            = Input(UInt(5.W))
-    val rs1_in           = Input(UInt(5.W))
-    val rs2_in           = Input(UInt(5.W))
+    val pc_in            = Input(UInt(c.xLen.W))
+    val read_data1_in    = Input(UInt(c.xLen.W))
+    val read_data2_in    = Input(UInt(c.xLen.W))
+    val sign_ext_imm_in  = Input(UInt(c.xLen.W))
+    val rd_in            = Input(UInt(log2Up(c.numRegs).W))
+    val rs1_in           = Input(UInt(log2Up(c.numRegs).W))
+    val rs2_in           = Input(UInt(log2Up(c.numRegs).W))
     val ALU_src_in       = Input(Bool())
     val ALU_op_in        = Input(UInt(4.W))
     val mem_write_in     = Input(Bool())
@@ -50,13 +51,13 @@ class pipeline_reg_id_ex extends Module {
     val mem_to_reg_in    = Input(Bool())
     val branch_in        = Input(Bool())
 
-    val pc_out           = Output(UInt(32.W))
-    val read_data1_out   = Output(UInt(32.W))
-    val read_data2_out   = Output(UInt(32.W))
-    val sign_ext_imm_out = Output(UInt(32.W))
-    val rd_out           = Output(UInt(5.W))
-    val rs1_out          = Output(UInt(5.W))
-    val rs2_out          = Output(UInt(5.W))
+    val pc_out           = Output(UInt(c.xLen.W))
+    val read_data1_out   = Output(UInt(c.xLen.W))
+    val read_data2_out   = Output(UInt(c.xLen.W))
+    val sign_ext_imm_out = Output(UInt(c.xLen.W))
+    val rd_out           = Output(UInt(log2Up(c.numRegs).W))
+    val rs1_out          = Output(UInt(log2Up(c.numRegs).W))
+    val rs2_out          = Output(UInt(log2Up(c.numRegs).W))
     val ALU_src_out      = Output(Bool())
     val ALU_op_out       = Output(UInt(4.W))
     val mem_write_out    = Output(Bool())
@@ -66,13 +67,13 @@ class pipeline_reg_id_ex extends Module {
     val branch_out       = Output(Bool())
   })
 
-  val pc           = RegInit(0.U(32.W))
-  val rd1          = RegInit(0.U(32.W))
-  val rd2          = RegInit(0.U(32.W))
-  val imm          = RegInit(0.U(32.W))
-  val rd           = RegInit(0.U(5.W))
-  val rs1          = RegInit(0.U(5.W))
-  val rs2          = RegInit(0.U(5.W))
+  val pc           = RegInit(0.U(c.xLen.W))
+  val rd1          = RegInit(0.U(c.xLen.W))
+  val rd2          = RegInit(0.U(c.xLen.W))
+  val imm          = RegInit(0.U(c.xLen.W))
+  val rd           = RegInit(0.U(log2Up(c.numRegs).W))
+  val rs1          = RegInit(0.U(log2Up(c.numRegs).W))
+  val rs2          = RegInit(0.U(log2Up(c.numRegs).W))
   val alu_src      = RegInit(false.B)
   val alu_op       = RegInit(0.U(4.W))
   val mem_w        = RegInit(false.B)
@@ -98,19 +99,19 @@ class pipeline_reg_id_ex extends Module {
   io.reg_write_out := reg_w; io.mem_to_reg_out := m2r; io.branch_out := br
 }
 
-class pipeline_reg_ex_mem extends Module {
+class pipeline_reg_ex_mem(c: Config) extends Module {
   val io = IO(new Bundle {
-    val alu_result_in  = Input(UInt(32.W))
-    val write_data_in  = Input(UInt(32.W))
-    val rd_in          = Input(UInt(5.W))
+    val alu_result_in  = Input(UInt(c.xLen.W))
+    val write_data_in  = Input(UInt(c.xLen.W))
+    val rd_in          = Input(UInt(log2Up(c.numRegs).W))
     val mem_read_in    = Input(Bool())
     val mem_write_in   = Input(Bool())
     val reg_write_in   = Input(Bool())
     val mem_to_reg_in  = Input(Bool())
 
-    val alu_result_out = Output(UInt(32.W))
-    val write_data_out = Output(UInt(32.W))
-    val rd_out         = Output(UInt(5.W))
+    val alu_result_out = Output(UInt(c.xLen.W))
+    val write_data_out = Output(UInt(c.xLen.W))
+    val rd_out         = Output(UInt(log2Up(c.numRegs).W))
     val mem_read_out   = Output(Bool())
     val mem_write_out  = Output(Bool())
     val reg_write_out  = Output(Bool())
@@ -126,17 +127,17 @@ class pipeline_reg_ex_mem extends Module {
   io.mem_to_reg_out := RegNext(io.mem_to_reg_in, false.B)
 }
 
-class pipeline_reg_mem_wb extends Module {
+class pipeline_reg_mem_wb(c: Config) extends Module {
   val io = IO(new Bundle {
-    val read_data_in   = Input(UInt(32.W))
-    val alu_result_in  = Input(UInt(32.W))
-    val rd_in          = Input(UInt(5.W))
+    val read_data_in   = Input(UInt(c.xLen.W))
+    val alu_result_in  = Input(UInt(c.xLen.W))
+    val rd_in          = Input(UInt(log2Up(c.numRegs).W))
     val reg_write_in   = Input(Bool())
     val mem_to_reg_in  = Input(Bool())
 
-    val read_data_out  = Output(UInt(32.W))
-    val alu_result_out = Output(UInt(32.W))
-    val rd_out         = Output(UInt(5.W))
+    val read_data_out  = Output(UInt(c.xLen.W))
+    val alu_result_out = Output(UInt(c.xLen.W))
+    val rd_out         = Output(UInt(log2Up(c.numRegs).W))
     val reg_write_out  = Output(Bool())
     val mem_to_reg_out = Output(Bool())
   })

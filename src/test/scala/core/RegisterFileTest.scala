@@ -6,9 +6,10 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class RegisterFileTest extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "RegisterFile"
+  val c = Config()
 
   it should "write to a register (x1) and read it back" in {
-    test(new RegisterFile) { dut =>
+    test(new RegisterFile(c)) { dut =>
       // 1. Write -123 to register x1
       dut.io.wa.poke(1.U)
       dut.io.wd.poke(-123.S)
@@ -30,7 +31,7 @@ class RegisterFileTest extends AnyFlatSpec with ChiselScalatestTester {
   }
 
   it should "maintain x0 as hardwired zero" in {
-    test(new RegisterFile) { dut =>
+    test(new RegisterFile(c)) { dut =>
       // Try to write 999 to x0
       dut.io.wa.poke(0.U)
       dut.io.wd.poke(999.S)
@@ -45,7 +46,7 @@ class RegisterFileTest extends AnyFlatSpec with ChiselScalatestTester {
   }
 
   it should "not write when regWrite is false" in {
-    test(new RegisterFile) { dut =>
+    test(new RegisterFile(c)) { dut =>
       // Try to write to x2 without enabling write
       dut.io.wa.poke(2.U)
       dut.io.wd.poke(555.S)

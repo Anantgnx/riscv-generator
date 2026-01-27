@@ -1,15 +1,16 @@
 package core
 
 import chisel3._
+import chisel3.util.log2Up
 
-class Forwarding_Unit extends Module {
+class Forwarding_Unit(c: Config) extends Module {
   val io = IO(new Bundle {
-    val rs1_in = Input(UInt(5.W))
-    val rs2_in = Input(UInt(5.W))
+    val rs1_in = Input(UInt(log2Up(c.numRegs).W))
+    val rs2_in = Input(UInt(log2Up(c.numRegs).W))
     val ex_mem_reg_write = Input(Bool())
-    val ex_mem_rd = Input(UInt(5.W))
+    val ex_mem_rd = Input(UInt(log2Up(c.numRegs).W))
     val mem_wb_reg_write = Input(Bool())
-    val mem_wb_rd = Input(UInt(5.W))
+    val mem_wb_rd = Input(UInt(log2Up(c.numRegs).W))
     val forward_a = Output(UInt(2.W))
     val forward_b = Output(UInt(2.W))
   })

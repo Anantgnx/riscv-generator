@@ -4,11 +4,12 @@ import chisel3._
 import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 
-class Data_MemoryTest extends AnyFlatSpec with ChiselScalatestTester {
+class Data_MemoryTest() extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "Data_Memory"
+  val c = Config()
 
   it should "write synchronously and read asynchronously" in {
-    test(new Data_Memory) { dut =>
+    test(new Data_Memory(c)) { dut =>
 
       // -------------------------------------------------------
       // 1. Write Data (Address 4 -> Index 1)
