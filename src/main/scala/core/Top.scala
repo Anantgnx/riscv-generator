@@ -100,6 +100,7 @@ class Top(c: Config) extends Module {
   alu.io.op1         := alu_in_a.asSInt
   alu.io.op2         := Mux(id_ex.io.ALU_src_out, id_ex.io.sign_ext_imm_out, forward_b_mux).asSInt
   alu.io.alu_control := id_ex.io.ALU_op_out
+  io.exit := alu.io.alu_result(0)
 
   ex_mem.io.alu_result_in := alu.io.alu_result.asUInt
   ex_mem.io.write_data_in := forward_b_mux
@@ -129,5 +130,4 @@ class Top(c: Config) extends Module {
   regFile.io.wa        := mem_wb.io.rd_out
   regFile.io.wd        := write_back_data.asSInt
 
-  io.exit := false.B
 }
