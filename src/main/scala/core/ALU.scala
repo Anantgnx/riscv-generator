@@ -19,6 +19,7 @@ class ALU(c: Config) extends Module {
     is(0.U) { io.alu_result := io.op1 + io.op2 }
     is(2.U) { io.alu_result := io.op1 + io.op2 }
     is(1.U) { io.alu_result := io.op1 - io.op2 }
+    is(3.U) { if (c.hasMul) {io.alu_result := (io.op1 * io.op2)(c.xLen - 1, 0).asSInt } }
     is(4.U) { io.alu_result := Mux(io.op1 < io.op2, 1.S, 0.S) }
     is(12.U) { io.alu_result := io.op1 | io.op2 }
     is(14.U) { io.alu_result := io.op1 & io.op2 }
