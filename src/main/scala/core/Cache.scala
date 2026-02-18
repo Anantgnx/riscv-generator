@@ -16,6 +16,7 @@ class Cache(c: Config) extends Module {
     val mem_addr = Output((UInt(c.xLen.W)))
     val mem_read_data = Input(UInt(c.xLen.W))
     val mem_write_en = Output(Bool())
+    val mem_valid = Input(Bool())
   })
 
   val num_sets = ((c.cacheSizeKB*1024)/(c.xLen/8)/c.cacheAssociativity)
@@ -38,6 +39,8 @@ class Cache(c: Config) extends Module {
 
   val sIdle :: sLookup :: sCompare :: sRefill :: Nil = Enum(4)
   val state = RegInit(sIdle)
+  val done = io.mem_valid
+  val replacement_way = RegInit(0.U(log2Up(c.cacheAssociativity).W))
 
   switch(state) {
     is(sIdle) {
@@ -58,6 +61,14 @@ class Cache(c: Config) extends Module {
 
     is(sRefill) {
       when(done) {
+        for (i <- 0 until c.cacheAssociativity) {
+          when(i.U === replacement_way) {
+            tag_arrays(i).write(addr_reg, addr_tag_reg)
+            data_arrays(i).write(addr_reg, io.mem_read_data)
+            valid_bit_array(i)(addr_reg) := true.B
+          }
+        }
+        replacement_way := replacement_way + 1.U
         state := sIdle
       }
     }
