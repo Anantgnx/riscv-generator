@@ -8,7 +8,19 @@ class InstructionMemory(c: Config) extends Module {
   val io = IO(new Bundle {
     val address = Input(UInt(c.xLen.W))
     val data_out = Output(UInt(c.xLen.W))
+    val mem_valid = Output(Bool())
   })
+
+  val count = RegInit(0.U(4.W))
+  val mem_latency = 10.U
+
+  when(true.B) {
+    count := count + 1.U
+  } .otherwise {
+    count := 0.U
+  }
+
+  io.mem_valid := (count === mem_latency)
 
   // 1. Define the Program
   val program = Seq(

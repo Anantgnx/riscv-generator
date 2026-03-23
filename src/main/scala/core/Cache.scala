@@ -15,8 +15,10 @@ class Cache(c: Config) extends Module {
 
     val mem_addr = Output((UInt(c.xLen.W)))
     val mem_read_data = Input(UInt(c.xLen.W))
+    val mem_write_data = Output(UInt(c.xLen.W))
     val mem_write_en = Output(Bool())
     val mem_valid = Input(Bool())
+    val mem_read_en = Output(Bool())
   })
 
   val num_sets = ((c.cacheSizeKB*1024)/(c.xLen/8)/c.cacheAssociativity)
@@ -42,9 +44,19 @@ class Cache(c: Config) extends Module {
   val done = io.mem_valid
   val replacement_way = RegInit(0.U(log2Up(c.cacheAssociativity).W))
 
+  val addr_reg = Reg(UInt(index_w.W))
+  val addr_tag_reg = Reg(UInt(tag_w.W))
+  val full_addr_reg = Reg(UInt(32.W))
+
   switch(state) {
     is(sIdle) {
-      state := sLookup
+      // Only transition if the CPU is actually requesting a memory op
+      when(io.cpu_read_en || io.cpu_write_en) {
+        state := sLookup
+        addr_reg := addr_index
+        addr_tag_reg := addr_tag
+        full_addr_reg := io.cpu_addr
+      }
     }
 
     is(sLookup) {
@@ -53,9 +65,27 @@ class Cache(c: Config) extends Module {
 
     is(sCompare) {
       when(hit) {
+        if (!c.isReadOnlyCache) {
+          when(io.cpu_write_en) {
+            // Update cache on write-hit (Write-Through)
+            for (i <- 0 until c.cacheAssociativity) {
+              when(hits(i)) {
+                data_arrays(i).write(addr_reg, io.cpu_write_data)
+              }
+            }
+          }
+        }
         state := sIdle
       }.otherwise {
-        state := sRefill
+        if (!c.isReadOnlyCache) {
+          // D-Cache logic:
+          // If Write-Miss -> Idle (Write-No-Allocate)
+          // If Read-Miss -> Refill
+          state := Mux(io.cpu_write_en, sIdle, sRefill)
+        } else {
+          // I-Cache logic: Always refill on miss
+          state := sRefill
+        }
       }
     }
 
@@ -74,29 +104,26 @@ class Cache(c: Config) extends Module {
     }
   }
 
-  val addr_reg = Reg(UInt(index_w.W))
-  val addr_tag_reg = Reg(UInt(tag_w.W))
-  when(state === sIdle){
-    addr_reg := addr_index
-    addr_tag_reg := addr_tag
-  }
-
   val sram_index = Mux(state === sIdle, addr_index, addr_reg)
-  io.stall_cpu := (state === sLookup || state === sCompare || state === sRefill)
+  io.stall_cpu := (state === sLookup || state === sCompare || (state === sRefill && !done))
 
   val tags_out = Wire(Vec(c.cacheAssociativity, UInt(tag_w.W)))
-  val tags_match = Wire(Vec(c.cacheAssociativity, Bool()))
-  val valid = Wire(Vec(c.cacheAssociativity, Bool()))
   val hits = Wire(Vec(c.cacheAssociativity, Bool()))
+  val data_out = Wire(Vec(c.cacheAssociativity, UInt(c.xLen.W)))
+
   for (i <- 0 until c.cacheAssociativity) {
     tags_out(i) := tag_arrays(i).read(sram_index)
+    data_out(i) := data_arrays(i).read(sram_index)
 
-    tags_match(i) := tags_out(i) === addr_tag_reg
-    valid(i) := valid_bit_array(i)(addr_reg)
-
-    hits(i) := tags_match(i) && valid(i)
+    hits(i) := (tags_out(i) === addr_tag_reg) && valid_bit_array(i)(addr_reg)
   }
 
   val hit = hits.asUInt.orR
 
+  // CPU and Memory Data/Control outputs
+  io.cpu_read_data  := Mux1H(hits, data_out)
+  io.mem_addr       := full_addr_reg
+  io.mem_write_en   := (!c.isReadOnlyCache.B && state === sCompare && io.cpu_write_en)
+  io.mem_write_data := io.cpu_write_data
+  io.mem_read_en := (state === sRefill) || (state === sCompare && !hit && io.cpu_read_en)
 }

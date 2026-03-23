@@ -23,17 +23,28 @@ class Top(c: Config) extends Module {
 
   val if_id      = Module(new pipeline_reg_if_id(c))
   val id_ex      = Module(new pipeline_reg_id_ex(c))
+  val dcache     = Module(new Cache(c.copy(isReadOnlyCache = false)))
+  val icache     = Module(new Cache(c.copy(isReadOnlyCache = true)))
 
   // --- IF Stage (Uses the 'stall_signal' bridge) ---
   val pc_plus_4 = pc_reg.io.pc_out + 4.U
   pc_reg.io.stall := stall_signal
   pc_reg.io.pc_in := pc_plus_4
-  imem.io.address := pc_reg.io.pc_out
+
+  // icache <- PC
+  icache.io.cpu_addr := pc_reg.io.pc_out
+  icache.io.cpu_read_en := true.B
+  icache.io.cpu_write_en := false.B
+
+  // Imem <-> icache
+  imem.io.address := icache.io.mem_addr
+  icache.io.mem_read_data := imem.io.data_out
+  icache.io.mem_valid := imem.io.mem_valid
 
   if_id.io.stall          := stall_signal
   if_id.io.flush          := false.B
   if_id.io.pc_in          := pc_reg.io.pc_out
-  if_id.io.instruction_in := imem.io.data_out
+  if_id.io.instruction_in := icache.io.cpu_read_data
 
   // --- ID Stage ---
   val id_inst = if_id.io.instruction_out
@@ -66,7 +77,7 @@ class Top(c: Config) extends Module {
     val forward = Module(new Forwarding_Unit(c))
 
     // Bridge the Hazard Unit to the rest of the CPU
-    stall_signal := hazard.io.stall
+    stall_signal := hazard.io.stall || icache.io.stall_cpu || dcache.io.stall_cpu
     hazard.io.IF_ID_rs1     := id_inst(19, 15)
     hazard.io.IF_ID_rs2     := id_inst(24, 20)
     hazard.io.ID_EX_rd      := id_ex.io.rd_out
@@ -94,6 +105,7 @@ class Top(c: Config) extends Module {
     alu.io.op2 := Mux(id_ex.io.ALU_src_out, id_ex.io.sign_ext_imm_out, forward_b_mux).asSInt
 
     // Wiring remaining 5-stage logic (MEM/WB)
+    // EX/MEM Registers
     ex_mem.io.alu_result_in := alu.io.alu_result.asUInt
     ex_mem.io.write_data_in := forward_b_mux
     ex_mem.io.rd_in         := id_ex.io.rd_out
@@ -102,13 +114,29 @@ class Top(c: Config) extends Module {
     ex_mem.io.mem_read_in   := id_ex.io.mem_read_out
     ex_mem.io.mem_to_reg_in := id_ex.io.mem_to_reg_out
 
-    dmem.io.Daddress   := ex_mem.io.alu_result_out
-    dmem.io.write_data := ex_mem.io.write_data_out
-    dmem.io.MemRead    := ex_mem.io.mem_read_out
-    dmem.io.MemWrite   := ex_mem.io.mem_write_out
+    //dmem.io.Daddress   := ex_mem.io.alu_result_out
+    //dmem.io.write_data := ex_mem.io.write_data_out
+    //dmem.io.MemRead    := ex_mem.io.mem_read_out
+    //dmem.io.MemWrite   := ex_mem.io.mem_write_out
+
+    // Cache <- ex/mem reg
+    dcache.io.cpu_addr := ex_mem.io.alu_result_out
+    dcache.io.cpu_write_data := ex_mem.io.write_data_out
+    dcache.io.cpu_read_en := ex_mem.io.mem_read_out
+    dcache.io.cpu_write_en := ex_mem.io.mem_write_out
+
+    // DMem <- Cache
+    dmem.io.Daddress   := dcache.io.mem_addr
+    dmem.io.write_data := dcache.io.mem_write_data
+    dmem.io.MemRead    := dcache.io.mem_read_en
+    dmem.io.MemWrite   := dcache.io.mem_write_en
+
+    // Cache <- Dmem
+    dcache.io.mem_read_data := dmem.io.read_data
+    dcache.io.mem_valid := dmem.io.mem_valid
 
     mem_wb.io.alu_result_in := ex_mem.io.alu_result_out
-    mem_wb.io.read_data_in  := dmem.io.read_data
+    mem_wb.io.read_data_in  := dcache.io.cpu_read_data
     mem_wb.io.rd_in         := ex_mem.io.rd_out
     mem_wb.io.reg_write_in  := ex_mem.io.reg_write_out
     mem_wb.io.mem_to_reg_in := ex_mem.io.mem_to_reg_out

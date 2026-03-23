@@ -10,9 +10,21 @@ class Data_Memory(c: Config) extends Module {
     val MemRead    = Input(Bool())
     val MemWrite   = Input(Bool())
     val read_data  = Output(UInt(c.xLen.W))
+    val mem_valid   = Output(Bool())
   })
 
   val memory = Mem(1024, UInt(c.xLen.W))
+
+  val count = RegInit(0.U(4.W))
+  val mem_latency = 10.U
+
+  when(io.MemRead) {
+    count := count + 1.U
+  } .otherwise {
+    count := 0.U
+  }
+
+  io.mem_valid := (count === mem_latency)
 
   when(io.MemWrite) {
     memory(io.Daddress(31, 2)) := io.write_data

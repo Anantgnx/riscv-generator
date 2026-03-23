@@ -8,6 +8,7 @@ case class Config(
                    isThreeStage: Boolean = false,
 
                    hasMul: Boolean = false,
+                   isReadOnlyCache: Boolean = false,
                    hasDiv: Boolean = false,
                    mulLatency: Int = 1,
 
