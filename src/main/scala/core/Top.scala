@@ -5,7 +5,12 @@ import chisel3.util._
 
 class Top(c: Config) extends Module {
   val io = IO(new Bundle {
-    val exit = Output(Bool())
+    val exit              = Output(Bool())
+    // Debug Ports (Exposing internal state to the Tester)
+    val debug_pc          = Output(UInt(c.xLen.W))
+    val debug_inst        = Output(UInt(c.xLen.W))
+    val debug_icache_state = Output(UInt(3.W))
+    val debug_dcache_state = Output(UInt(3.W))
   })
 
   // 1. Define INTERFACE WIRES
@@ -14,37 +19,45 @@ class Top(c: Config) extends Module {
 
   // 2. Instantiate Base Modules (Always exist)
   val pc_reg     = Module(new PC(c))
-  val imem       = Module(new InstructionMemory(c))
+  val mem        = Module(new MainMemory(c))
   val regFile    = Module(new RegisterFile(c))
   val control    = Module(new Control_Unit(c))
   val immGen     = Module(new ImmGen(c))
   val alu        = Module(new ALU(c))
-  val dmem       = Module(new Data_Memory(c))
 
   val if_id      = Module(new pipeline_reg_if_id(c))
   val id_ex      = Module(new pipeline_reg_id_ex(c))
   val dcache     = Module(new Cache(c.copy(isReadOnlyCache = false)))
   val icache     = Module(new Cache(c.copy(isReadOnlyCache = true)))
+  val arbiter    = Module(new core.Arbiter(c))
+  val hazard  = Module(new Hazard_Unit(c))
 
   // --- IF Stage (Uses the 'stall_signal' bridge) ---
-  val pc_plus_4 = pc_reg.io.pc_out + 4.U
+  val pc_next = Mux(stall_signal, pc_reg.io.pc_out, pc_reg.io.pc_out + 4.U)
+
+  // 2. Feed it into the register
+  pc_reg.io.pc_in := pc_next
   pc_reg.io.stall := stall_signal
-  pc_reg.io.pc_in := pc_plus_4
+
+  // mem <- arbiter
+  mem.io <> arbiter.io.master_mem
 
   // icache <- PC
   icache.io.cpu_addr := pc_reg.io.pc_out
   icache.io.cpu_read_en := true.B
   icache.io.cpu_write_en := false.B
+  icache.io.cpu_addr       := pc_reg.io.pc_out
+  icache.io.cpu_read_en    := true.B
+  icache.io.cpu_write_en   := false.B
+  icache.io.cpu_write_data := 0.U
 
   // Imem <-> icache
-  imem.io.address := icache.io.mem_addr
-  icache.io.mem_read_data := imem.io.data_out
-  icache.io.mem_valid := imem.io.mem_valid
+  arbiter.io.icache <> icache.io.mem
 
   if_id.io.stall          := stall_signal
   if_id.io.flush          := false.B
   if_id.io.pc_in          := pc_reg.io.pc_out
-  if_id.io.instruction_in := icache.io.cpu_read_data
+  if_id.io.instruction_in := Mux(icache.io.stall_cpu, if_id.io.instruction_out, icache.io.cpu_read_data)
 
   // --- ID Stage ---
   val id_inst = if_id.io.instruction_out
@@ -56,28 +69,30 @@ class Top(c: Config) extends Module {
   immGen.io.instr := id_inst
 
   if (c.isThreeStage) {
-    // 3-STAGE LOGIC
-    stall_signal := false.B
+    // 1. Address comes straight from the ALU
+    dcache.io.cpu_addr := alu.io.alu_result.asUInt
 
-    regFile.io.wd := Mux(id_ex.io.mem_to_reg_out, dmem.io.read_data.asSInt, alu.io.alu_result)
+    // 2. Data to store comes from the second register operand
+    dcache.io.cpu_write_data := regFile.io.rd2.asUInt
 
-    alu.io.op1 := id_ex.io.read_data1_out.asSInt
-    alu.io.op2 := Mux(id_ex.io.ALU_src_out, id_ex.io.sign_ext_imm_out, id_ex.io.read_data2_out).asSInt
+    // 3. The Register File 'Write Data' chooses between ALU and Cache
+    // If the instruction is a LOAD, take Cache data; otherwise, take ALU result
+    regFile.io.wd := Mux(control.io.MemtoReg,
+      dcache.io.cpu_read_data.asSInt,
+      alu.io.alu_result)
 
-    regFile.io.regWrite  := id_ex.io.reg_write_out
-    regFile.io.wa        := id_ex.io.rd_out
-    regFile.io.wd        := alu.io.alu_result
-    write_back_data      := 0.U
+    arbiter.io.dcache <> dcache.io.mem
+
+    dcache.io.cpu_read_en  := control.io.MemRead
+    dcache.io.cpu_write_en := control.io.Mem_write
 
   } else {
     // 5-STAGE LOGIC
     val ex_mem  = Module(new pipeline_reg_ex_mem(c))
     val mem_wb  = Module(new pipeline_reg_mem_wb(c))
-    val hazard  = Module(new Hazard_Unit(c))
     val forward = Module(new Forwarding_Unit(c))
 
     // Bridge the Hazard Unit to the rest of the CPU
-    stall_signal := hazard.io.stall || icache.io.stall_cpu || dcache.io.stall_cpu
     hazard.io.IF_ID_rs1     := id_inst(19, 15)
     hazard.io.IF_ID_rs2     := id_inst(24, 20)
     hazard.io.ID_EX_rd      := id_ex.io.rd_out
@@ -114,11 +129,6 @@ class Top(c: Config) extends Module {
     ex_mem.io.mem_read_in   := id_ex.io.mem_read_out
     ex_mem.io.mem_to_reg_in := id_ex.io.mem_to_reg_out
 
-    //dmem.io.Daddress   := ex_mem.io.alu_result_out
-    //dmem.io.write_data := ex_mem.io.write_data_out
-    //dmem.io.MemRead    := ex_mem.io.mem_read_out
-    //dmem.io.MemWrite   := ex_mem.io.mem_write_out
-
     // Cache <- ex/mem reg
     dcache.io.cpu_addr := ex_mem.io.alu_result_out
     dcache.io.cpu_write_data := ex_mem.io.write_data_out
@@ -126,14 +136,7 @@ class Top(c: Config) extends Module {
     dcache.io.cpu_write_en := ex_mem.io.mem_write_out
 
     // DMem <- Cache
-    dmem.io.Daddress   := dcache.io.mem_addr
-    dmem.io.write_data := dcache.io.mem_write_data
-    dmem.io.MemRead    := dcache.io.mem_read_en
-    dmem.io.MemWrite   := dcache.io.mem_write_en
-
-    // Cache <- Dmem
-    dcache.io.mem_read_data := dmem.io.read_data
-    dcache.io.mem_valid := dmem.io.mem_valid
+    arbiter.io.dcache <> dcache.io.mem
 
     mem_wb.io.alu_result_in := ex_mem.io.alu_result_out
     mem_wb.io.read_data_in  := dcache.io.cpu_read_data
@@ -168,4 +171,17 @@ class Top(c: Config) extends Module {
   id_ex.io.reg_write_in     := control.io.Reg_write
   id_ex.io.mem_to_reg_in    := control.io.MemtoReg
   id_ex.io.branch_in        := control.io.Branch
+  // Connect internal signals to Top-level IO for the Tester
+  io.debug_pc           := pc_reg.io.pc_out
+  io.debug_inst         := if_id.io.instruction_out
+  io.debug_icache_state := icache.io.debug_state
+  io.debug_dcache_state := dcache.io.debug_state
+
+  val icache_starting_lookup = (icache.io.debug_state === 0.U) && (icache.io.cpu_read_en)
+
+  // 2. Combine with your existing logic
+  stall_signal := icache.io.stall_cpu ||
+    dcache.io.stall_cpu ||
+    icache_starting_lookup || // <--- Added this to catch Cycle 0
+    (if (c.isThreeStage) false.B else hazard.io.stall)
 }

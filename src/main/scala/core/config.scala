@@ -17,3 +17,12 @@ case class Config(
                    cacheSizeKB: Int = 1
                  )
 
+class MemPort(c: Config) extends Bundle {
+  val mem_addr       = Output(UInt(c.xLen.W))
+  val mem_read_data  = Input(UInt(c.xLen.W))
+  val mem_write_data = Output(UInt(c.xLen.W))
+  val mem_write_en   = Output(Bool())
+  val mem_read_en    = Output(Bool())
+  val mem_valid      = Input(Bool())
+}
+
