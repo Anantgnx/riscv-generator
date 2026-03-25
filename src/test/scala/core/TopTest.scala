@@ -13,7 +13,7 @@ class TopTest extends AnyFlatSpec with ChiselScalatestTester {
       println("RISC-V System-on-Chip Simulation: Logic Trace")
       println("="*60)
 
-      for (cycle <- 0 until 100) {
+      for (cycle <- 0 until 1000) {
         // We use .peekInt().toInt to convert BigInt to a standard Integer for the 'match'
         val pc     = dut.io.debug_pc.peekInt().toInt
         val inst   = dut.io.debug_inst.peekInt().toLong
