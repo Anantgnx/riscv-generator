@@ -5,47 +5,39 @@ import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 
 class TopTest extends AnyFlatSpec with ChiselScalatestTester {
-  "RISCV Processor" should "handle simultaneous Cache misses and Arbitration" in {
-    // Passing the default Config; you can toggle isThreeStage here if needed
+  "RISCV Processor" should "execute Matrix Multiply and debug branch logic" in {
     test(new Top(Config())).withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
+      println("=" * 110)
+      println(f"${"Cycle"}%-6s | ${"PC"}%-6s | ${"Inst"}%-10s | ${"x10"}%-5s | ${"ALU"}%-5s | ${"Br?"}%-5s | ${"Target"}%-7s | ${"Stall"}%-8s")
+      println("-" * 110)
 
-      println("\n" + "="*60)
-      println("RISC-V System-on-Chip Simulation: Logic Trace")
-      println("="*60)
+      var cycles = 0
+      while (cycles < 1000 && !dut.io.exit.peek().litToBoolean) {
+        val pc        = dut.io.debug_pc.peek().litValue
+        val inst      = dut.io.debug_inst.peek().litValue
+        val x10       = dut.io.debug_x10.peek().litValue
+        val brTaken   = dut.io.debug_branch_taken.peek().litToBoolean
+        val brTarget  = dut.io.debug_branch_target.peek().litValue
+        val aluRes    = dut.io.debug_alu_result.peek().litValue
 
-      for (cycle <- 0 until 1000) {
-        // We use .peekInt().toInt to convert BigInt to a standard Integer for the 'match'
-        val pc     = dut.io.debug_pc.peekInt().toInt
-        val inst   = dut.io.debug_inst.peekInt().toLong
-        val iState = dut.io.debug_icache_state.peekInt().toInt
-        val dState = dut.io.debug_dcache_state.peekInt().toInt
-
-        // Map State Integers to Names for clear terminal debugging
-        val iName = iState match {
-          case 0 => "IDLE   "
-          case 1 => "LOOKUP "
-          case 2 => "COMPARE"
-          case 3 => "REFILL "
-          case _ => "UNKNOWN"
+        val stallStr = dut.io.debug_stall_src.peek().litValue.toInt match {
+          case 1 => "ICache"
+          case 2 => "DCache"
+          case 3 => "Hazard"
+          case 4 => "Start"
+          case _ => "None"
         }
 
-        val dName = dState match {
-          case 0 => "IDLE   "
-          case 1 => "LOOKUP "
-          case 2 => "COMPARE"
-          case 3 => "REFILL "
-          case _ => "UNKNOWN"
-        }
-
-        // Print the hardware status for this clock cycle
-        println(f"Cycle $cycle%2d | PC: 0x$pc%04x | Inst: 0x$inst%08x | I-Cache: $iName | D-Cache: $dName")
+        println(f"$cycles%-6d | 0x$pc%04x | 0x$inst%08x | $x10%-5d | $aluRes%-5d | $brTaken%-5b | 0x$brTarget%04x | $stallStr%-8s")
 
         dut.clock.step(1)
+        cycles += 1
       }
 
-      println("="*60)
-      println("Simulation Finished. Check test_run_dir/ for the VCD file.")
-      println("="*60)
+      println("=" * 110)
+      println(f"Simulation Finished at Cycle $cycles")
+      println(f"Final Value in x10: ${dut.io.debug_x10.peek().litValue}")
+      println("=" * 110)
     }
   }
 }
