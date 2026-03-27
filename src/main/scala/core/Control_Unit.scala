@@ -16,6 +16,7 @@ class Control_Unit(c: Config) extends Module {
     val ALU_op      = Output(UInt(4.W))
     val MemtoReg    = Output(Bool())
     val Branch      = Output(Bool())
+    val funct3      = Output(UInt(3.W))   // NEW: for BEQ vs BNE in Top
   })
 
   val opcode = io.instruction(6, 0)
@@ -35,6 +36,7 @@ class Control_Unit(c: Config) extends Module {
   io.MemtoReg  := false.B
   io.Branch    := false.B
   io.ALU_op    := 0.U
+  io.funct3    := funct3             // NEW: always pass through
 
   when(!io.stall) {
     switch(opcode) {

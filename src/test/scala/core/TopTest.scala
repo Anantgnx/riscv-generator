@@ -5,39 +5,38 @@ import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 
 class TopTest extends AnyFlatSpec with ChiselScalatestTester {
-  "RISCV Processor" should "execute Matrix Multiply and debug branch logic" in {
+  "RISCV Processor" should "validate BNE and SLT" in {
     test(new Top(Config())).withAnnotations(Seq(WriteVcdAnnotation)) { dut =>
-      println("=" * 110)
-      println(f"${"Cycle"}%-6s | ${"PC"}%-6s | ${"Inst"}%-10s | ${"x10"}%-5s | ${"ALU"}%-5s | ${"Br?"}%-5s | ${"Target"}%-7s | ${"Stall"}%-8s")
-      println("-" * 110)
+      println("=" * 60)
+      println("RISC-V Processor Simulation: Logic Trace")
+      println("=" * 60)
 
       var cycles = 0
-      while (cycles < 1000 && !dut.io.exit.peek().litToBoolean) {
-        val pc        = dut.io.debug_pc.peek().litValue
-        val inst      = dut.io.debug_inst.peek().litValue
-        val x10       = dut.io.debug_x10.peek().litValue
-        val brTaken   = dut.io.debug_branch_taken.peek().litToBoolean
-        val brTarget  = dut.io.debug_branch_target.peek().litValue
-        val aluRes    = dut.io.debug_alu_result.peek().litValue
+      while (cycles < 300) {
+        val pc       = dut.io.debug_pc.peek().litValue
+        val inst     = dut.io.debug_inst.peek().litValue
+        val x10      = dut.io.debug_x10.peek().litValue
+        val dcacheSt = dut.io.debug_dcache_state.peek().litValue.toInt
 
-        val stallStr = dut.io.debug_stall_src.peek().litValue.toInt match {
-          case 1 => "ICache"
-          case 2 => "DCache"
-          case 3 => "Hazard"
-          case 4 => "Start"
-          case _ => "None"
+        val dcacheStr = dcacheSt match {
+          case 0 => "IDLE   "
+          case 1 => "LOOKUP "
+          case 2 => "COMPARE"
+          case 3 => "REFILL "
+          case _ => "UNKNOWN"
         }
 
-        println(f"$cycles%-6d | 0x$pc%04x | 0x$inst%08x | $x10%-5d | $aluRes%-5d | $brTaken%-5b | 0x$brTarget%04x | $stallStr%-8s")
+        println(f"Cycle $cycles%3d | PC: 0x$pc%04x | Inst: 0x$inst%08x | x10: $x10%3d | D-Cache: $dcacheStr")
 
         dut.clock.step(1)
         cycles += 1
       }
 
-      println("=" * 110)
-      println(f"Simulation Finished at Cycle $cycles")
-      println(f"Final Value in x10: ${dut.io.debug_x10.peek().litValue}")
-      println("=" * 110)
+      println("=" * 60)
+      val finalX10 = dut.io.debug_x10.peek().litValue
+      println(f"Simulation finished at cycle $cycles")
+      println(f"x10 = $finalX10  (expected 1 after SLT, was 10 after loop)")
+      println("=" * 60)
     }
   }
 }

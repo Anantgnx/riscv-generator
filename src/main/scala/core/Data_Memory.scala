@@ -1,34 +1,37 @@
 package core
 
 import chisel3._
-import chisel3.util.log2Up
+import chisel3.util._
 
-class Data_Memory(c: Config) extends Module {
-  val io = IO(new Bundle {
-    val Daddress   = Input(UInt(c.xLen.W))
-    val write_data = Input(UInt(c.xLen.W))
-    val MemRead    = Input(Bool())
-    val MemWrite   = Input(Bool())
-    val read_data  = Output(UInt(c.xLen.W))
-    val mem_valid   = Output(Bool())
-  })
+// Data RAM with configurable latency.
+// Connected to dcache via MemPort (same handshake as old MainMemory).
+// Supports both reads and writes.
+class DataRAM(c: Config) extends Module {
+  val io = IO(Flipped(new MemPort(c)))
 
-  val memory = Mem(1024, UInt(c.xLen.W))
+  val mem_latency = c.memLatency.U
 
-  val count = RegInit(0.U(4.W))
-  val mem_latency = 10.U
+  val count   = RegInit(0.U(8.W))
+  val is_busy = io.mem_read_en || io.mem_write_en
 
-  when(io.MemRead) {
-    count := count + 1.U
-  } .otherwise {
-    count := 0.U
+  when(is_busy) {
+    when(count === mem_latency) { count := 0.U }
+      .otherwise                { count := count + 1.U }
+  } .otherwise { count := 0.U }
+
+  io.mem_valid := (count === mem_latency) && is_busy
+
+  val word_addr = (io.mem_addr >> 2).asUInt
+
+  // Data storage — initialise with your benchmark data arrays here.
+  // Size: 512 words = 2KB. Adjust as needed.
+  val ram = Mem(512, UInt(c.xLen.W))
+
+  // Read
+  io.mem_read_data := ram(word_addr(8, 0))
+
+  // Write
+  when(io.mem_write_en && io.mem_valid) {
+    ram(word_addr(8, 0)) := io.mem_write_data
   }
-
-  io.mem_valid := (count === mem_latency)
-
-  when(io.MemWrite) {
-    memory(io.Daddress(31, 2)) := io.write_data
-  }
-
-  io.read_data := memory(io.Daddress(31, 2))
 }
