@@ -12,7 +12,9 @@ class RegisterFile(c: Config) extends Module {
     val wd        = Input(SInt(c.xLen.W))
     val rd1       = Output(SInt(c.xLen.W))
     val rd2       = Output(SInt(c.xLen.W))
-    val debug_x10 = Output(UInt(c.xLen.W))  // always reads x10 directly
+    val debug_x10 = Output(UInt(c.xLen.W))
+    val debug_x15 = Output(UInt(c.xLen.W))
+    val debug_x12 = Output(UInt(c.xLen.W))
   })
 
   val registers = RegInit(VecInit(Seq.fill(c.numRegs)(0.S(c.xLen.W))))
@@ -26,4 +28,6 @@ class RegisterFile(c: Config) extends Module {
 
   // Direct read of x10 — independent of ra1/ra2, always valid
   io.debug_x10 := registers(10).asUInt
+  io.debug_x15 := registers(15).asUInt
+  io.debug_x12 := registers(12).asUInt
 }

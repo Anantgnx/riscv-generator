@@ -12,6 +12,9 @@ class Cache(c: Config) extends Module {
     val cpu_read_data  = Output(UInt(c.xLen.W))
     val stall_cpu      = Output(Bool())
     val debug_state    = Output(UInt(3.W))
+    val debug_hits     = Output(UInt(32.W))
+    val debug_misses   = Output(UInt(32.W))
+    val debug_rdr      = Output(UInt(32.W))
     val mem            = new MemPort(c)
   })
 
@@ -24,13 +27,13 @@ class Cache(c: Config) extends Module {
   val addr_index = io.cpu_addr(index_w + offset_w - 1, offset_w)
   val addr_tag   = io.cpu_addr(31, offset_w + index_w)
 
-  // --- Storage ---
-  val tag_arrays      = Seq.fill(c.cacheAssociativity)(Mem(num_sets, UInt(tag_w.W)))
-  val data_arrays     = Seq.fill(c.cacheAssociativity)(Mem(num_sets, UInt(c.xLen.W)))
+  // --- Storage: VecInit registers for combinational reads ---
+  val tag_arrays      = Seq.fill(c.cacheAssociativity)(RegInit(VecInit(Seq.fill(num_sets)(0.U(tag_w.W)))))
+  val data_arrays     = Seq.fill(c.cacheAssociativity)(RegInit(VecInit(Seq.fill(num_sets)(0.U(c.xLen.W)))))
   val valid_bit_array = RegInit(VecInit(Seq.fill(c.cacheAssociativity)(VecInit(Seq.fill(num_sets)(false.B)))))
 
-  // --- State Machine ---
-  val sIdle :: sLookup :: sCompare :: sRefill :: Nil = Enum(4)
+  // --- State Machine: IDLE and REFILL only ---
+  val sIdle :: sRefill :: Nil = Enum(2)
   val state = RegInit(sIdle)
 
   val addr_reg        = Reg(UInt(index_w.W))
@@ -39,17 +42,15 @@ class Cache(c: Config) extends Module {
   val replacement_way = RegInit(0.U(log2Up(c.cacheAssociativity).W))
 
   // --- Combinational tag/data lookup ---
-  val sram_index  = Mux(state === sIdle, addr_index, addr_reg)
-  val current_tag = Mux(state === sIdle, addr_tag,   addr_tag_reg)
-
+  // VecInit gives combinational reads: result available same cycle address presented
   val tags_out = Wire(Vec(c.cacheAssociativity, UInt(tag_w.W)))
   val data_out = Wire(Vec(c.cacheAssociativity, UInt(c.xLen.W)))
   val hits     = Wire(Vec(c.cacheAssociativity, Bool()))
 
   for (i <- 0 until c.cacheAssociativity) {
-    tags_out(i) := tag_arrays(i).read(sram_index)
-    data_out(i) := data_arrays(i).read(sram_index)
-    hits(i)     := (tags_out(i) === current_tag) && valid_bit_array(i)(sram_index)
+    tags_out(i) := tag_arrays(i)(addr_index)
+    data_out(i) := data_arrays(i)(addr_index)
+    hits(i)     := (tags_out(i) === addr_tag) && valid_bit_array(i)(addr_index)
   }
 
   val hit  = hits.asUInt.orR
@@ -59,35 +60,30 @@ class Cache(c: Config) extends Module {
   switch(state) {
     is(sIdle) {
       when(io.cpu_read_en || io.cpu_write_en) {
-        state         := sLookup
-        addr_reg      := addr_index
-        addr_tag_reg  := addr_tag
-        full_addr_reg := io.cpu_addr
-      }
-    }
-    is(sLookup) {
-      state := sCompare
-    }
-    is(sCompare) {
-      when(hit) {
-        if (!c.isReadOnlyCache) {
+        when(hit) {
+          // Hit: serve data combinationally, stay in IDLE, no stall
           when(io.cpu_write_en) {
             for (i <- 0 until c.cacheAssociativity) {
-              when(hits(i)) { data_arrays(i).write(addr_reg, io.cpu_write_data) }
+              when(hits(i)) {
+                data_arrays(i)(addr_index) := io.cpu_write_data
+              }
             }
           }
+        } .otherwise {
+          // Miss: latch address, go to REFILL
+          state         := sRefill
+          addr_reg      := addr_index
+          addr_tag_reg  := addr_tag
+          full_addr_reg := io.cpu_addr
         }
-        state := sIdle
-      } .otherwise {
-        state := Mux(io.cpu_write_en && !c.isReadOnlyCache.B, sIdle, sRefill)
       }
     }
     is(sRefill) {
       when(done) {
         for (i <- 0 until c.cacheAssociativity) {
           when(replacement_way === i.U) {
-            tag_arrays(i).write(addr_reg, addr_tag_reg)
-            data_arrays(i).write(addr_reg, io.mem.mem_read_data)
+            tag_arrays(i)(addr_reg)      := addr_tag_reg
+            data_arrays(i)(addr_reg)     := io.mem.mem_read_data
             valid_bit_array(i)(addr_reg) := true.B
           }
         }
@@ -97,25 +93,35 @@ class Cache(c: Config) extends Module {
     }
   }
 
-  // --- Registered output ---
-  // Written on the last active cycle. stall_cpu held one extra cycle
-  // (was_busy) so the pipeline sees stable data when it unfreezes.
+  // --- Hit/Miss Counters ---
+  val hit_count  = RegInit(0.U(32.W))
+  val miss_count = RegInit(0.U(32.W))
+  when(state === sIdle && (io.cpu_read_en || io.cpu_write_en)) {
+    when(hit)  { hit_count  := hit_count  + 1.U }
+      .otherwise { miss_count := miss_count + 1.U }
+  }
+  io.debug_hits   := hit_count
+  io.debug_misses := miss_count
+
+  // --- Read data output ---
+  // On hit: combinational directly from data_arrays
+  // On miss: captured from DataRAM when refill completes
   val read_data_reg = RegInit(0.U(c.xLen.W))
-  when(state === sCompare && hit) {
-    read_data_reg := Mux1H(hits, data_out)
-  } .elsewhen(state === sRefill && done) {
+  when(state === sRefill && done) {
     read_data_reg := io.mem.mem_read_data
   }
-  io.cpu_read_data := read_data_reg
+  io.cpu_read_data := Mux(state === sIdle && hit, Mux1H(hits, data_out), read_data_reg)
 
-  val was_busy  = RegNext(state =/= sIdle, false.B)
-  io.stall_cpu := (state =/= sIdle) || was_busy
+  // Stall on miss detected in IDLE (combinational) or during REFILL
+  val miss = (io.cpu_read_en || io.cpu_write_en) && !hit
+  io.stall_cpu := (state === sRefill) || (state === sIdle && miss)
 
   // Memory port
   io.mem.mem_addr       := full_addr_reg
   io.mem.mem_read_en    := (state === sRefill)
-  io.mem.mem_write_en   := (!c.isReadOnlyCache.B && state === sCompare && io.cpu_write_en && hit)
+  io.mem.mem_write_en   := (state === sIdle && io.cpu_write_en && hit)
   io.mem.mem_write_data := io.cpu_write_data
 
   io.debug_state := state.asUInt
+  io.debug_rdr   := read_data_reg
 }
