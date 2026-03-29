@@ -30,34 +30,47 @@ class InstructionROM(c: Config) extends Module {
   })
 
   // ---------------------------------------------------------------
-  // BENCHMARK 0: BNE + SLT Validation
-  // sum = 1+2+3+4 = 10, then x10 = (0 < sum) ? 1 : 0
-  // Expected: x10 = 1
-  // No data memory needed.
+  // BENCHMARK 0: 2x2 Matrix Multiply  C = A * B
+  // A=[[1,2],[3,4]], B=[[5,6],[7,8]]
+  // C=[[19,22],[43,50]]  x10=C[1][1]=50
+  // A at 0x080, B at 0x090, C at 0x0A0 (DataRAM words 32-43)
+  // ROM expanded to 32 entries (0x00-0x7C)
   // ---------------------------------------------------------------
   val bench0 = VecInit(Seq(
-    "h00000513".U(32.W), // 0x00: addi x10, x0,  0     (sum = 0)
-    "h00400613".U(32.W), // 0x04: addi x12, x0,  4     (counter = 4)
-    "h00C50533".U(32.W), // 0x08: add  x10, x10, x12   <- LOOP TOP
-    "hFFF60613".U(32.W), // 0x0c: addi x12, x12, -1
-    "hFE061CE3".U(32.W), // 0x10: bne  x12, x0,  -8
-    "h00A02533".U(32.W), // 0x14: slt  x10, x0,  x10
-    "h00000000".U(32.W), // 0x18: nop (exit)
-    "h00000000".U(32.W)  // 0x1c: nop
+    "h00000593".U(32.W), // 0x00: addi x11,x0,0     # i_off=0
+    "h00800713".U(32.W), // 0x04: addi x14,x0,8     # limit=8
+    "h08000793".U(32.W), // 0x08: addi x15,x0,128   # base_A=0x80
+    "h09000813".U(32.W), // 0x0C: addi x16,x0,144   # base_B=0x90
+    "h0A000893".U(32.W), // 0x10: addi x17,x0,160   # base_C=0xA0
+    "h00000613".U(32.W), // 0x14: addi x12,x0,0     # j_off=0  LOOP_I
+    "h00000913".U(32.W), // 0x18: addi x18,x0,0     # acc=0    LOOP_J
+    "h00000693".U(32.W), // 0x1C: addi x13,x0,0     # k_off=0
+    "h00B78AB3".U(32.W), // 0x20: add x21,x15,x11   # LOOP_K: addr=bA+i_off
+    "h00DA8AB3".U(32.W), // 0x24: add x21,x21,x13   # addr+=k_off
+    "h000AA983".U(32.W), // 0x28: lw x19,0(x21)     # A[i][k]
+    "h00D68B33".U(32.W), // 0x2C: add x22,x13,x13   # k_off*2
+    "h01680AB3".U(32.W), // 0x30: add x21,x16,x22   # addr=bB+k_off*2
+    "h00CA8AB3".U(32.W), // 0x34: add x21,x21,x12   # addr+=j_off
+    "h000AAA03".U(32.W), // 0x38: lw x20,0(x21)     # B[k][j]
+    "h034989B3".U(32.W), // 0x3C: mul x19,x19,x20   # A[i][k]*B[k][j]
+    "h01390933".U(32.W), // 0x40: add x18,x18,x19   # acc+=product
+    "h00468693".U(32.W), // 0x44: addi x13,x13,4    # k_off+=4
+    "h00E6ABB3".U(32.W), // 0x48: slt x23,x13,x14   # k_off<8?
+    "hFC0B9AE3".U(32.W), // 0x4C: bne x23,x0,-44    # goto LOOP_K
+    "h00B88AB3".U(32.W), // 0x50: add x21,x17,x11   # addr=bC+i_off
+    "h00CA8AB3".U(32.W), // 0x54: add x21,x21,x12   # addr+=j_off
+    "h012AA023".U(32.W), // 0x58: sw x18,0(x21)     # C[i][j]=acc
+    "h00460613".U(32.W), // 0x5C: addi x12,x12,4    # j_off+=4
+    "h00E62BB3".U(32.W), // 0x60: slt x23,x12,x14   # j_off<8?
+    "hFA0B9AE3".U(32.W), // 0x64: bne x23,x0,-76    # goto LOOP_J
+    "h00858593".U(32.W), // 0x68: addi x11,x11,8    # i_off+=8
+    "h01000C13".U(32.W), // 0x6C: addi x24,x0,16    # limit=16
+    "h0185ABB3".U(32.W), // 0x70: slt x23,x11,x24   # i_off<16?
+    "hFA0B90E3".U(32.W), // 0x74: bne x23,x0,-96    # goto LOOP_I
+    "h00C8A503".U(32.W), // 0x78: lw x10,12(x17)    # x10=C[1][1]=50
+    "h00000013".U(32.W)  // 0x7C: nop               (32 total)
   ))
 
-  // ---------------------------------------------------------------
-  // BENCHMARK 1: Vector Reduction
-  // x10 = sum(C[i]) for i=0..15, where C[i] = A[i]+B[i] = 17 (precomputed)
-  // C at 0x080 (16 words of value 17, initialized in DataRAM)
-  // Expected: x10 = 16 * 17 = 272
-  //
-  // Registers:
-  //   x10 = accumulator
-  //   x12 = ptr (starts 0x80, ends 0xC0)
-  //   x14 = end = 0xC0
-  //   x15 = C[i]
-  // ---------------------------------------------------------------
   val bench1 = VecInit(Seq(
     // Vector Reduction: x10 = sum(C[i]) for i=0..15, C[i]=17, expected=272
     // 16 entries = power of 2, no index truncation issues

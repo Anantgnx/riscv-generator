@@ -5,522 +5,218 @@
 [info] set current project to %NAME% (in build file:/home/anantgnx/riscv-generator/)
 [info] compiling 1 Scala source to /home/anantgnx/riscv-generator/target/scala-2.13/classes ...
 [info] done compiling
-======================================================================
-Benchmark : Vector Reduction (benchmark=1)
-Config    : cacheSizeKB=1 assoc=1 latency=10 stages=5
-======================================================================
-Cycle    0 | PC: 0x0000 | x15:    0 | mwrd:    0 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle    1 | PC: 0x0004 | x15:    0 | mwrd:    0 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle    2 | PC: 0x0008 | x15:    0 | mwrd:    0 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle    3 | PC: 0x000c | x15:    0 | mwrd:    0 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle    4 | PC: 0x0010 | x15:    0 | mwrd:    0 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle    5 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle    6 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle    7 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: REFILL
-Cycle    8 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: REFILL
-Cycle    9 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   10 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   11 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   12 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   13 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   14 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   15 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   16 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   17 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   18 | PC: 0x0014 | x15:    0 | mwrd:    0 | em_m2r: 1 | mw_rw: 1 | mw_rd: 14 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   19 | PC: 0x0018 | x15:    0 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   20 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   21 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   22 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   23 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   24 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle   25 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle   26 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   27 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   28 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   29 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   30 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   31 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   32 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   33 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   34 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   35 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   36 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   37 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle   38 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   39 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   40 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   41 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   42 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   43 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   44 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   45 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   46 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   47 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   48 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   49 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   50 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   51 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   52 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   53 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   54 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   55 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle   56 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle   57 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   58 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   59 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   60 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   61 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   62 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   63 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   64 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   65 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   66 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   67 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   68 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle   69 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   70 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   71 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   72 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   73 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   74 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   75 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   76 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   77 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   78 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   79 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   80 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   81 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   82 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   83 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   84 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   85 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle   86 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle   87 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle   88 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   89 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   90 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   91 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   92 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   93 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   94 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   95 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   96 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   97 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   98 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle   99 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  100 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  101 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  102 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  103 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  104 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  105 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  106 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  107 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  108 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  109 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  110 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  111 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  112 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  113 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  114 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  115 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  116 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  117 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  118 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  119 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  120 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  121 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  122 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  123 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  124 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  125 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  126 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  127 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  128 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  129 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  130 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  131 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  132 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  133 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  134 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  135 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  136 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  137 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  138 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  139 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  140 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  141 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  142 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  143 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  144 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  145 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  146 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  147 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  148 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  149 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  150 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  151 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  152 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  153 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  154 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  155 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  156 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  157 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  158 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  159 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  160 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  161 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  162 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  163 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  164 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  165 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  166 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  167 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  168 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  169 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  170 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  171 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  172 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  173 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  174 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  175 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  176 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  177 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  178 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  179 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  180 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  181 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  182 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  183 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  184 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  185 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  186 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  187 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  188 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  189 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  190 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  191 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  192 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  193 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  194 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  195 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  196 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  197 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  198 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  199 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  200 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  201 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  202 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  203 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  204 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  205 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  206 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  207 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  208 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  209 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  210 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  211 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  212 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  213 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  214 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  215 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  216 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  217 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  218 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  219 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  220 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  221 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  222 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  223 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  224 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  225 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  226 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  227 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  228 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  229 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  230 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  231 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  232 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  233 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  234 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  235 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  236 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  237 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  238 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  239 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  240 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  241 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  242 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  243 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  244 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  245 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  246 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  247 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  248 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  249 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  250 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  251 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  252 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  253 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  254 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  255 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  256 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  257 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  258 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  259 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  260 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  261 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  262 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  263 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  264 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  265 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  266 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  267 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  268 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  269 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  270 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  271 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  272 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  273 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  274 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  275 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  276 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  277 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  278 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  279 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  280 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  281 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  282 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  283 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  284 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  285 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  286 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  287 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  288 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  289 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  290 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  291 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  292 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  293 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  294 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  295 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  296 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  297 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  298 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  299 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  300 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  301 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  302 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  303 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  304 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  305 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  306 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  307 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  308 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  309 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  310 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  311 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  312 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  313 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  314 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  315 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  316 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  317 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  318 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  319 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  320 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  321 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  322 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  323 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  324 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  325 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  326 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  327 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  328 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  329 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  330 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  331 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  332 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  333 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  334 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  335 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  336 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  337 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  338 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  339 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  340 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  341 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  342 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  343 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  344 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  345 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  346 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  347 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  348 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  349 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  350 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  351 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  352 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  353 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  354 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  355 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  356 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  357 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  358 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  359 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  360 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  361 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  362 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  363 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  364 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  365 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  366 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  367 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  368 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  369 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  370 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  371 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  372 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  373 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  374 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  375 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  376 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  377 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  378 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  379 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  380 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  381 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  382 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  383 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  384 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  385 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  386 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  387 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  388 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  389 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  390 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  391 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  392 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  393 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  394 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  395 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  396 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  397 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  398 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  399 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  400 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  401 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  402 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  403 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  404 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  405 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  406 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  407 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  408 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  409 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  410 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  411 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  412 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  413 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  414 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  415 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  416 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  417 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  418 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  419 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  420 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  421 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  422 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  423 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  424 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  425 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  426 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  427 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  428 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  429 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  430 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  431 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  432 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  433 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  434 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  435 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  436 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  437 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  438 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  439 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  440 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  441 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  442 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  443 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  444 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  445 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  446 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  447 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  448 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  449 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  450 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  451 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  452 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  453 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  454 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  455 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  456 | PC: 0x000c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  457 | PC: 0x0010 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  458 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 1 | DC: IDLE  
-Cycle  459 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  460 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  461 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  462 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  463 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  464 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  465 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  466 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  467 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  468 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  469 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  470 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  471 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: IDLE  
-Cycle  472 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  473 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  474 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  475 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  476 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  477 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  478 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  479 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  480 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  481 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  482 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 1 | hz: 0 | DC: REFILL
-Cycle  483 | PC: 0x0014 | x15:   17 | mwrd:   17 | em_m2r: 1 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  484 | PC: 0x0018 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 15 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  485 | PC: 0x001c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  486 | PC: 0x0020 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 10 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  487 | PC: 0x0024 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 1 | mw_rd: 12 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  488 | PC: 0x0028 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd: 21 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  489 | PC: 0x002c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  490 | PC: 0x0030 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  491 | PC: 0x0034 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  492 | PC: 0x0038 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  493 | PC: 0x003c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  494 | PC: 0x0040 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  495 | PC: 0x0044 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  496 | PC: 0x0048 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  497 | PC: 0x004c | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  498 | PC: 0x0050 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-Cycle  499 | PC: 0x0054 | x15:   17 | mwrd:   17 | em_m2r: 0 | mw_rw: 0 | mw_rd:  0 | hb: 0 | hz: 0 | DC: IDLE  
-======================================================================
-Final x10      : 272
-D-Cache hits   : 16
-D-Cache misses : 31
-Hit rate       : 34.0%
-======================================================================
+====================================================================================================
+2x2 Matrix Multiply: C = A * B
+A=[[1,2],[3,4]]  B=[[5,6],[7,8]]
+Expected: C=[[19,22],[43,50]], x10=C[1][1]=50
+====================================================================================================
+  Cyc |     PC |  x10  x11  x12  x13  x14  x15  x16  x17   x18   x19   x20   x21   x22   x23   x24 |     DC hb hz
+----------------------------------------------------------------------------------------------------
+    0 | 0x0000 |    0    0    0    0    0    0    0    0     0     0     0     0     0     0     0 | IDLE    0  0
+    1 | 0x0004 |    0    0    0    0    0    0    0    0     0     0     0     0     0     0     0 | IDLE    0  0
+    2 | 0x0008 |    0    0    0    0    0    0    0    0     0     0     0     0     0     0     0 | IDLE    0  0
+    3 | 0x000c |    0    0    0    0    0    0    0    0     0     0     0     0     0     0     0 | IDLE    0  0
+    4 | 0x0010 |    0    0    0    0    0    0    0    0     0     0     0     0     0     0     0 | IDLE    0  0
+    5 | 0x0014 |    0    0    0    0    0    0    0    0     0     0     0     0     0     0     0 | IDLE    0  0
+    6 | 0x0018 |    0    0    0    0    8    0    0    0     0     0     0     0     0     0     0 | IDLE    0  0
+    7 | 0x001c |    0    0    0    0    8  128    0    0     0     0     0     0     0     0     0 | IDLE    0  0
+    8 | 0x0020 |    0    0    0    0    8  128  144    0     0     0     0     0     0     0     0 | IDLE    0  0
+    9 | 0x0024 |    0    0    0    0    8  128  144  160     0     0     0     0     0     0     0 | IDLE    0  0
+   10 | 0x0028 |    0    0    0    0    8  128  144  160     0     0     0     0     0     0     0 | IDLE    0  0
+   11 | 0x002c |    0    0    0    0    8  128  144  160     0     0     0     0     0     0     0 | IDLE    0  0
+   12 | 0x0030 |    0    0    0    0    8  128  144  160     0     0     0     0     0     0     0 | IDLE    0  0
+   13 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | IDLE    1  0
+   14 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | REFILL  1  0
+   15 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | REFILL  1  0
+   16 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | REFILL  1  0
+   17 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | REFILL  1  0
+   18 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | REFILL  1  0
+   19 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | REFILL  1  0
+   20 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | REFILL  1  0
+   21 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | REFILL  1  0
+   22 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | REFILL  1  0
+   23 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | REFILL  1  0
+   24 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | REFILL  1  0
+   25 | 0x0034 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | IDLE    0  0
+   26 | 0x0038 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | IDLE    0  0
+   27 | 0x003c |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | IDLE    0  0
+   28 | 0x0040 |    0    0    0    0    8  128  144  160     0     0     0   128     0     0     0 | IDLE    0  1
+   29 | 0x0040 |    0    0    0    0    8  128  144  160     0     0     0   144     0     0     0 | IDLE    0  0
+   30 | 0x0044 |    0    0    0    0    8  128  144  160     0     0     0   144     0     0     0 | IDLE    0  0
+   31 | 0x0048 |    0    0    0    0    8  128  144  160     0     0     0   144     0     0     0 | IDLE    0  0
+   32 | 0x004c |    0    0    0    0    8  128  144  160     0     0     0   144     0     0     0 | IDLE    0  0
+   33 | 0x0050 |    0    0    0    0    8  128  144  160     0     0     0   144     0     0     0 | IDLE    0  0
+   34 | 0x0054 |    0    0    0    0    8  128  144  160     0     0     0   144     0     0     0 | IDLE    0  0
+   35 | 0x0020 |    0    0    0    4    8  128  144  160     0     0     0   144     0     0     0 | IDLE    0  0
+   36 | 0x0024 |    0    0    0    4    8  128  144  160     0     0     0   144     0     1     0 | IDLE    0  0
+   37 | 0x0028 |    0    0    0    4    8  128  144  160     0     0     0   144     0     1     0 | IDLE    0  0
+   38 | 0x002c |    0    0    0    4    8  128  144  160     0     0     0   144     0     1     0 | IDLE    0  0
+   39 | 0x0030 |    0    0    0    4    8  128  144  160     0     0     0   144     0     1     0 | IDLE    0  0
+   40 | 0x0034 |    0    0    0    4    8  128  144  160     0     0     0   128     0     1     0 | IDLE    0  0
+   41 | 0x0038 |    0    0    0    4    8  128  144  160     0     0     0   132     0     1     0 | IDLE    0  0
+   42 | 0x003c |    0    0    0    4    8  128  144  160     0     0     0   132     0     1     0 | IDLE    0  0
+   43 | 0x0040 |    0    0    0    4    8  128  144  160     0     0     0   132     8     1     0 | IDLE    0  1
+   44 | 0x0040 |    0    0    0    4    8  128  144  160     0     0     0   152     8     1     0 | IDLE    0  0
+   45 | 0x0044 |    0    0    0    4    8  128  144  160     0     0     0   152     8     1     0 | IDLE    0  0
+   46 | 0x0048 |    0    0    0    4    8  128  144  160     0     0     0   152     8     1     0 | IDLE    0  0
+   47 | 0x004c |    0    0    0    4    8  128  144  160     0     0     0   152     8     1     0 | IDLE    0  0
+   48 | 0x0050 |    0    0    0    4    8  128  144  160     0     0     0   152     8     1     0 | IDLE    0  0
+   49 | 0x0054 |    0    0    0    4    8  128  144  160     0     0     0   152     8     1     0 | IDLE    0  0
+   50 | 0x0058 |    0    0    0    8    8  128  144  160     0     0     0   152     8     1     0 | IDLE    0  0
+   51 | 0x005c |    0    0    0    8    8  128  144  160     0     0     0   152     8     0     0 | IDLE    0  0
+   52 | 0x0060 |    0    0    0    8    8  128  144  160     0     0     0   152     8     0     0 | IDLE    0  0
+   53 | 0x0064 |    0    0    0    8    8  128  144  160     0     0     0   160     8     0     0 | IDLE    0  0
+   54 | 0x0068 |    0    0    0    8    8  128  144  160     0     0     0   160     8     0     0 | IDLE    0  0
+   55 | 0x006c |    0    0    0    8    8  128  144  160     0     0     0   160     8     0     0 | IDLE    0  0
+   56 | 0x0018 |    0    0    4    8    8  128  144  160     0     0     0   160     8     0     0 | IDLE    0  0
+   57 | 0x001c |    0    0    4    8    8  128  144  160     0     0     0   160     8     1     0 | IDLE    0  0
+   58 | 0x0020 |    0    0    4    8    8  128  144  160     0     0     0   160     8     1     0 | IDLE    0  0
+   59 | 0x0024 |    0    0    4    8    8  128  144  160     0     0     0   160     8     1     0 | IDLE    0  0
+   60 | 0x0028 |    0    0    4    8    8  128  144  160     0     0     0   160     8     1     0 | IDLE    0  0
+   61 | 0x002c |    0    0    4    8    8  128  144  160     0     0     0   160     8     1     0 | IDLE    0  0
+   62 | 0x0030 |    0    0    4    0    8  128  144  160     0     0     0   160     8     1     0 | IDLE    0  0
+   63 | 0x0034 |    0    0    4    0    8  128  144  160     0     0     0   128     8     1     0 | IDLE    0  0
+   64 | 0x0038 |    0    0    4    0    8  128  144  160     0     0     0   128     8     1     0 | IDLE    0  0
+   65 | 0x003c |    0    0    4    0    8  128  144  160     0     0     0   128     8     1     0 | IDLE    0  0
+   66 | 0x0040 |    0    0    4    0    8  128  144  160     0     0     0   128     0     1     0 | IDLE    0  1
+   67 | 0x0040 |    0    0    4    0    8  128  144  160     0     0     0   144     0     1     0 | IDLE    0  0
+   68 | 0x0044 |    0    0    4    0    8  128  144  160     0     0     0   148     0     1     0 | IDLE    0  0
+   69 | 0x0048 |    0    0    4    0    8  128  144  160     0     0     0   148     0     1     0 | IDLE    0  0
+   70 | 0x004c |    0    0    4    0    8  128  144  160     0     0     0   148     0     1     0 | IDLE    0  0
+   71 | 0x0050 |    0    0    4    0    8  128  144  160     0     0     0   148     0     1     0 | IDLE    0  0
+   72 | 0x0054 |    0    0    4    0    8  128  144  160     0     0     0   148     0     1     0 | IDLE    0  0
+   73 | 0x0020 |    0    0    4    4    8  128  144  160     0     0     0   148     0     1     0 | IDLE    0  0
+   74 | 0x0024 |    0    0    4    4    8  128  144  160     0     0     0   148     0     1     0 | IDLE    0  0
+   75 | 0x0028 |    0    0    4    4    8  128  144  160     0     0     0   148     0     1     0 | IDLE    0  0
+   76 | 0x002c |    0    0    4    4    8  128  144  160     0     0     0   148     0     1     0 | IDLE    0  0
+   77 | 0x0030 |    0    0    4    4    8  128  144  160     0     0     0   148     0     1     0 | IDLE    0  0
+   78 | 0x0034 |    0    0    4    4    8  128  144  160     0     0     0   128     0     1     0 | IDLE    0  0
+   79 | 0x0038 |    0    0    4    4    8  128  144  160     0     0     0   132     0     1     0 | IDLE    0  0
+   80 | 0x003c |    0    0    4    4    8  128  144  160     0     0     0   132     0     1     0 | IDLE    0  0
+   81 | 0x0040 |    0    0    4    4    8  128  144  160     0     0     0   132     8     1     0 | IDLE    0  1
+   82 | 0x0040 |    0    0    4    4    8  128  144  160     0     0     0   152     8     1     0 | IDLE    0  0
+   83 | 0x0044 |    0    0    4    4    8  128  144  160     0     0     0   156     8     1     0 | IDLE    0  0
+   84 | 0x0048 |    0    0    4    4    8  128  144  160     0     0     0   156     8     1     0 | IDLE    0  0
+   85 | 0x004c |    0    0    4    4    8  128  144  160     0     0     0   156     8     1     0 | IDLE    0  0
+   86 | 0x0050 |    0    0    4    4    8  128  144  160     0     0     0   156     8     1     0 | IDLE    0  0
+   87 | 0x0054 |    0    0    4    4    8  128  144  160     0     0     0   156     8     1     0 | IDLE    0  0
+   88 | 0x0058 |    0    0    4    8    8  128  144  160     0     0     0   156     8     1     0 | IDLE    0  0
+   89 | 0x005c |    0    0    4    8    8  128  144  160     0     0     0   156     8     0     0 | IDLE    0  0
+   90 | 0x0060 |    0    0    4    8    8  128  144  160     0     0     0   156     8     0     0 | IDLE    0  0
+   91 | 0x0064 |    0    0    4    8    8  128  144  160     0     0     0   160     8     0     0 | IDLE    0  0
+   92 | 0x0068 |    0    0    4    8    8  128  144  160     0     0     0   164     8     0     0 | IDLE    0  0
+   93 | 0x006c |    0    0    4    8    8  128  144  160     0     0     0   164     8     0     0 | IDLE    0  0
+   94 | 0x0070 |    0    0    8    8    8  128  144  160     0     0     0   164     8     0     0 | IDLE    0  0
+   95 | 0x0074 |    0    0    8    8    8  128  144  160     0     0     0   164     8     0     0 | IDLE    0  0
+   96 | 0x0078 |    0    0    8    8    8  128  144  160     0     0     0   164     8     0     0 | IDLE    0  0
+   97 | 0x007c |    0    8    8    8    8  128  144  160     0     0     0   164     8     0     0 | IDLE    0  0
+   98 | 0x0014 |    0    8    8    8    8  128  144  160     0     0     0   164     8     0    16 | IDLE    0  0
+   99 | 0x0018 |    0    8    8    8    8  128  144  160     0     0     0   164     8     1    16 | IDLE    0  0
+  100 | 0x001c |    0    8    8    8    8  128  144  160     0     0     0   164     8     1    16 | IDLE    0  0
+  101 | 0x0020 |    0    8    8    8    8  128  144  160     0     0     0   164     8     1    16 | IDLE    0  0
+  102 | 0x0024 |    0    8    8    8    8  128  144  160     0     0     0   164     8     1    16 | IDLE    0  0
+  103 | 0x0028 |    0    8    0    8    8  128  144  160     0     0     0   164     8     1    16 | IDLE    0  0
+  104 | 0x002c |    0    8    0    8    8  128  144  160     0     0     0   164     8     1    16 | IDLE    0  0
+  105 | 0x0030 |    0    8    0    0    8  128  144  160     0     0     0   164     8     1    16 | IDLE    0  0
+  106 | 0x0034 |    0    8    0    0    8  128  144  160     0     0     0   136     8     1    16 | IDLE    0  0
+  107 | 0x0038 |    0    8    0    0    8  128  144  160     0     0     0   136     8     1    16 | IDLE    0  0
+  108 | 0x003c |    0    8    0    0    8  128  144  160     0     0     0   136     8     1    16 | IDLE    0  0
+  109 | 0x0040 |    0    8    0    0    8  128  144  160     0     0     0   136     0     1    16 | IDLE    0  1
+  110 | 0x0040 |    0    8    0    0    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  111 | 0x0044 |    0    8    0    0    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  112 | 0x0048 |    0    8    0    0    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  113 | 0x004c |    0    8    0    0    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  114 | 0x0050 |    0    8    0    0    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  115 | 0x0054 |    0    8    0    0    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  116 | 0x0020 |    0    8    0    4    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  117 | 0x0024 |    0    8    0    4    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  118 | 0x0028 |    0    8    0    4    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  119 | 0x002c |    0    8    0    4    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  120 | 0x0030 |    0    8    0    4    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  121 | 0x0034 |    0    8    0    4    8  128  144  160     0     0     0   136     0     1    16 | IDLE    0  0
+  122 | 0x0038 |    0    8    0    4    8  128  144  160     0     0     0   140     0     1    16 | IDLE    0  0
+  123 | 0x003c |    0    8    0    4    8  128  144  160     0     0     0   140     0     1    16 | IDLE    0  0
+  124 | 0x0040 |    0    8    0    4    8  128  144  160     0     0     0   140     8     1    16 | IDLE    0  1
+  125 | 0x0040 |    0    8    0    4    8  128  144  160     0     0     0   152     8     1    16 | IDLE    0  0
+  126 | 0x0044 |    0    8    0    4    8  128  144  160     0     0     0   152     8     1    16 | IDLE    0  0
+  127 | 0x0048 |    0    8    0    4    8  128  144  160     0     0     0   152     8     1    16 | IDLE    0  0
+  128 | 0x004c |    0    8    0    4    8  128  144  160     0     0     0   152     8     1    16 | IDLE    0  0
+  129 | 0x0050 |    0    8    0    4    8  128  144  160     0     0     0   152     8     1    16 | IDLE    0  0
+  130 | 0x0054 |    0    8    0    4    8  128  144  160     0     0     0   152     8     1    16 | IDLE    0  0
+  131 | 0x0058 |    0    8    0    8    8  128  144  160     0     0     0   152     8     1    16 | IDLE    0  0
+  132 | 0x005c |    0    8    0    8    8  128  144  160     0     0     0   152     8     0    16 | IDLE    0  0
+  133 | 0x0060 |    0    8    0    8    8  128  144  160     0     0     0   152     8     0    16 | IDLE    0  0
+  134 | 0x0064 |    0    8    0    8    8  128  144  160     0     0     0   168     8     0    16 | IDLE    0  0
+  135 | 0x0068 |    0    8    0    8    8  128  144  160     0     0     0   168     8     0    16 | IDLE    0  0
+  136 | 0x006c |    0    8    0    8    8  128  144  160     0     0     0   168     8     0    16 | IDLE    0  0
+  137 | 0x0018 |    0    8    4    8    8  128  144  160     0     0     0   168     8     0    16 | IDLE    0  0
+  138 | 0x001c |    0    8    4    8    8  128  144  160     0     0     0   168     8     1    16 | IDLE    0  0
+  139 | 0x0020 |    0    8    4    8    8  128  144  160     0     0     0   168     8     1    16 | IDLE    0  0
+  140 | 0x0024 |    0    8    4    8    8  128  144  160     0     0     0   168     8     1    16 | IDLE    0  0
+  141 | 0x0028 |    0    8    4    8    8  128  144  160     0     0     0   168     8     1    16 | IDLE    0  0
+  142 | 0x002c |    0    8    4    8    8  128  144  160     0     0     0   168     8     1    16 | IDLE    0  0
+  143 | 0x0030 |    0    8    4    0    8  128  144  160     0     0     0   168     8     1    16 | IDLE    0  0
+  144 | 0x0034 |    0    8    4    0    8  128  144  160     0     0     0   136     8     1    16 | IDLE    0  0
+  145 | 0x0038 |    0    8    4    0    8  128  144  160     0     0     0   136     8     1    16 | IDLE    0  0
+  146 | 0x003c |    0    8    4    0    8  128  144  160     0     0     0   136     8     1    16 | IDLE    0  0
+  147 | 0x0040 |    0    8    4    0    8  128  144  160     0     0     0   136     0     1    16 | IDLE    0  1
+  148 | 0x0040 |    0    8    4    0    8  128  144  160     0     0     0   144     0     1    16 | IDLE    0  0
+  149 | 0x0044 |    0    8    4    0    8  128  144  160     0     0     0   148     0     1    16 | IDLE    0  0
+  150 | 0x0048 |    0    8    4    0    8  128  144  160     0     0     0   148     0     1    16 | IDLE    0  0
+  151 | 0x004c |    0    8    4    0    8  128  144  160     0     0     0   148     0     1    16 | IDLE    0  0
+  152 | 0x0050 |    0    8    4    0    8  128  144  160     0     0     0   148     0     1    16 | IDLE    0  0
+  153 | 0x0054 |    0    8    4    0    8  128  144  160     0     0     0   148     0     1    16 | IDLE    0  0
+  154 | 0x0020 |    0    8    4    4    8  128  144  160     0     0     0   148     0     1    16 | IDLE    0  0
+  155 | 0x0024 |    0    8    4    4    8  128  144  160     0     0     0   148     0     1    16 | IDLE    0  0
+  156 | 0x0028 |    0    8    4    4    8  128  144  160     0     0     0   148     0     1    16 | IDLE    0  0
+  157 | 0x002c |    0    8    4    4    8  128  144  160     0     0     0   148     0     1    16 | IDLE    0  0
+  158 | 0x0030 |    0    8    4    4    8  128  144  160     0     0     0   148     0     1    16 | IDLE    0  0
+  159 | 0x0034 |    0    8    4    4    8  128  144  160     0     0     0   136     0     1    16 | IDLE    0  0
+  160 | 0x0038 |    0    8    4    4    8  128  144  160     0     0     0   140     0     1    16 | IDLE    0  0
+  161 | 0x003c |    0    8    4    4    8  128  144  160     0     0     0   140     0     1    16 | IDLE    0  0
+  162 | 0x0040 |    0    8    4    4    8  128  144  160     0     0     0   140     8     1    16 | IDLE    0  1
+  163 | 0x0040 |    0    8    4    4    8  128  144  160     0     0     0   152     8     1    16 | IDLE    0  0
+  164 | 0x0044 |    0    8    4    4    8  128  144  160     0     0     0   156     8     1    16 | IDLE    0  0
+  165 | 0x0048 |    0    8    4    4    8  128  144  160     0     0     0   156     8     1    16 | IDLE    0  0
+  166 | 0x004c |    0    8    4    4    8  128  144  160     0     0     0   156     8     1    16 | IDLE    0  0
+  167 | 0x0050 |    0    8    4    4    8  128  144  160     0     0     0   156     8     1    16 | IDLE    0  0
+  168 | 0x0054 |    0    8    4    4    8  128  144  160     0     0     0   156     8     1    16 | IDLE    0  0
+  169 | 0x0058 |    0    8    4    8    8  128  144  160     0     0     0   156     8     1    16 | IDLE    0  0
+  170 | 0x005c |    0    8    4    8    8  128  144  160     0     0     0   156     8     0    16 | IDLE    0  0
+  171 | 0x0060 |    0    8    4    8    8  128  144  160     0     0     0   156     8     0    16 | IDLE    0  0
+  172 | 0x0064 |    0    8    4    8    8  128  144  160     0     0     0   168     8     0    16 | IDLE    0  0
+  173 | 0x0068 |    0    8    4    8    8  128  144  160     0     0     0   172     8     0    16 | IDLE    0  0
+  174 | 0x006c |    0    8    4    8    8  128  144  160     0     0     0   172     8     0    16 | IDLE    0  0
+  175 | 0x0070 |    0    8    8    8    8  128  144  160     0     0     0   172     8     0    16 | IDLE    0  0
+  176 | 0x0074 |    0    8    8    8    8  128  144  160     0     0     0   172     8     0    16 | IDLE    0  0
+  177 | 0x0078 |    0    8    8    8    8  128  144  160     0     0     0   172     8     0    16 | IDLE    0  0
+  178 | 0x007c |    0   16    8    8    8  128  144  160     0     0     0   172     8     0    16 | IDLE    0  0
+  179 | 0x0080 |    0   16    8    8    8  128  144  160     0     0     0   172     8     0    16 | IDLE    0  0
+  180 | 0x0084 |    0   16    8    8    8  128  144  160     0     0     0   172     8     0    16 | IDLE    1  0
+  181 | 0x0084 |    0   16    8    8    8  128  144  160     0     0     0   172     8     0    16 | REFILL  1  0
+  182 | 0x0084 |    0   16    8    8    8  128  144  160     0     0     0   172     8     0    16 | REFILL  1  0
+  183 | 0x0084 |    0   16    8    8    8  128  144  160     0     0     0   172     8     0    16 | REFILL  1  0
+  184 | 0x0084 |    0   16    8    8    8  128  144  160     0     0     0   172     8     0    16 | REFILL  1  0
+  185 | 0x0084 |    0   16    8    8    8  128  144  160     0     0     0   172     8     0    16 | REFILL  1  0
+
+[HALT] PC 0x84 stable for 5 cycles — program complete or hung
+[HALT] x10 after drain = 0
+====================================================================================================
+Final x10    : 0  (expected 50)
+Cache hits   : 19
+Cache misses : 2
+Hit rate     : 90.5%
+====================================================================================================
 [info] TopTest:
 [info] RISCV Processor
-[info] - should run benchmark
-[info] Run completed in 1 minute, 30 seconds.
+[info] - should run benchmark *** FAILED ***
+[info]   0 did not equal 50 x10 expected 50 got 0 (TopTest.scala:87)
+[info] Run completed in 2 minutes, 17 seconds.
 [info] Total number of tests run: 1
 [info] Suites: completed 1, aborted 0
-[info] Tests: succeeded 1, failed 0, canceled 0, ignored 0, pending 0
-[info] All tests passed.
-[success] Total time: 96 s (01:36), completed Mar 28, 2026, 7:26:36 PM
+[info] Tests: succeeded 0, failed 1, canceled 0, ignored 0, pending 0
+[info] *** 1 TEST FAILED ***
+[error] Failed tests:
+[error] 	core.TopTest
+[error] (Test / testOnly) sbt.TestsFailedException: Tests unsuccessful
+[error] Total time: 143 s (02:23), completed Mar 29, 2026, 12:02:31 PM

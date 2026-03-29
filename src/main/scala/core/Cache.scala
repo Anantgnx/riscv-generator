@@ -93,28 +93,32 @@ class Cache(c: Config) extends Module {
     }
   }
 
-  // --- Hit/Miss Counters ---
-  val hit_count  = RegInit(0.U(32.W))
-  val miss_count = RegInit(0.U(32.W))
-  when(state === sIdle && (io.cpu_read_en || io.cpu_write_en)) {
-    when(hit)  { hit_count  := hit_count  + 1.U }
-      .otherwise { miss_count := miss_count + 1.U }
-  }
-  io.debug_hits   := hit_count
-  io.debug_misses := miss_count
-
   // --- Read data output ---
-  // On hit: combinational directly from data_arrays
-  // On miss: captured from DataRAM when refill completes
   val read_data_reg = RegInit(0.U(c.xLen.W))
   when(state === sRefill && done) {
     read_data_reg := io.mem.mem_read_data
   }
   io.cpu_read_data := Mux(state === sIdle && hit, Mux1H(hits, data_out), read_data_reg)
 
-  // Stall on miss detected in IDLE (combinational) or during REFILL
-  val miss = (io.cpu_read_en || io.cpu_write_en) && !hit
-  io.stall_cpu := (state === sRefill) || (state === sIdle && miss)
+  // --- Stall logic ---
+  // Gate requests: ignore cpu_read_en on the cycle we return to IDLE from REFILL
+  val just_refilled = RegNext(state === sRefill && done, false.B)
+  val request = (io.cpu_read_en || io.cpu_write_en) && !just_refilled
+  val miss = (state === sIdle) && request && !hit
+  io.stall_cpu := (state === sRefill) || miss
+
+  // --- Hit/Miss Counters ---
+  // Count once per request using rising edge of request signal
+  val prev_request = RegNext(request, false.B)
+  val new_request  = request && !prev_request
+  val hit_count  = RegInit(0.U(32.W))
+  val miss_count = RegInit(0.U(32.W))
+  when(state === sIdle && new_request) {
+    when(hit)  { hit_count  := hit_count  + 1.U }
+      .otherwise { miss_count := miss_count + 1.U }
+  }
+  io.debug_hits   := hit_count
+  io.debug_misses := miss_count
 
   // Memory port
   io.mem.mem_addr       := full_addr_reg

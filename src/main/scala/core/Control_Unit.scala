@@ -22,6 +22,7 @@ class Control_Unit(c: Config) extends Module {
   val opcode = io.instruction(6, 0)
   val funct3 = io.instruction(14, 12)
   val bit30  = io.instruction(30)
+  val bit25  = io.instruction(25)  // M-extension flag (MUL/DIV)
 
   val R_TYPE    = "b0110011".U
   val LOAD      = "b0000011".U
@@ -43,7 +44,9 @@ class Control_Unit(c: Config) extends Module {
       is(R_TYPE) {
         io.ALU_src   := false.B
         io.Reg_write := true.B
-        io.ALU_op    := Cat(funct3, bit30)
+        // bit25=1 means M-extension (MUL): ALU_op=3
+        // otherwise standard: Cat(funct3, bit30)
+        io.ALU_op    := Mux(bit25, 3.U, Cat(funct3, bit30))
       }
       is(LOAD) {
         io.ALU_src   := true.B
