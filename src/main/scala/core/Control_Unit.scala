@@ -53,12 +53,12 @@ class Control_Unit(c: Config) extends Module {
         io.Reg_write := true.B
         io.MemRead   := true.B
         io.MemtoReg  := true.B
-        io.ALU_op    := "b0010".U
+        io.ALU_op    := "b0000".U
       }
       is(STORE) {
         io.ALU_src   := true.B
         io.Mem_write := true.B
-        io.ALU_op    := "b0010".U
+        io.ALU_op    := "b0000".U
       }
       is(I_TYPE) {
         io.ALU_src   := true.B

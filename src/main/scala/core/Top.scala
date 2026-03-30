@@ -7,9 +7,7 @@ class Top(c: Config) extends Module {
   val io = IO(new Bundle {
     val exit               = Output(Bool())
     val debug_pc           = Output(UInt(c.xLen.W))
-    val debug_inst         = Output(UInt(c.xLen.W))
     val debug_dcache_state = Output(UInt(3.W))
-    // x10–x24 debug ports
     val debug_x10          = Output(UInt(c.xLen.W))
     val debug_x11          = Output(UInt(c.xLen.W))
     val debug_x12          = Output(UInt(c.xLen.W))
@@ -25,15 +23,14 @@ class Top(c: Config) extends Module {
     val debug_x22          = Output(UInt(c.xLen.W))
     val debug_x23          = Output(UInt(c.xLen.W))
     val debug_x24          = Output(UInt(c.xLen.W))
-    val debug_hits         = Output(UInt(32.W))
-    val debug_misses       = Output(UInt(32.W))
-    val debug_rdr          = Output(UInt(32.W))
     val debug_hb           = Output(Bool())
     val debug_hz           = Output(Bool())
-    val debug_em_m2r       = Output(Bool())
-    val debug_mw_rw        = Output(Bool())
-    val debug_mw_rd        = Output(UInt(5.W))
-    val debug_mwrdat       = Output(UInt(32.W))
+    val debug_hits         = Output(UInt(32.W))
+    val debug_misses       = Output(UInt(32.W))
+    val debug_c00          = Output(UInt(32.W))
+    val debug_c01          = Output(UInt(32.W))
+    val debug_c10          = Output(UInt(32.W))
+    val debug_c11          = Output(UInt(32.W))
   })
 
   val write_back_data = WireDefault(0.U(c.xLen.W))
@@ -55,9 +52,9 @@ class Top(c: Config) extends Module {
   val hazard_stall  = if (c.isThreeStage) false.B else hazard.io.stall
 
   // --- IF Stage ---
-  irom.io.pc      := pc_reg.io.pc_out
-  if_id.io.stall  := hardware_busy || hazard_stall
-  if_id.io.pc_in  := pc_reg.io.pc_out
+  irom.io.pc             := pc_reg.io.pc_out
+  if_id.io.stall         := hardware_busy || hazard_stall
+  if_id.io.pc_in         := pc_reg.io.pc_out
   if_id.io.instruction_in := irom.io.inst_out
 
   // --- ID Stage ---
@@ -81,12 +78,8 @@ class Top(c: Config) extends Module {
     dataRam.io               <> dcache.io.mem
     regFile.io.wd            := Mux(control.io.MemtoReg, dcache.io.cpu_read_data.asSInt, alu.io.alu_result)
 
-    io.debug_hb      := hardware_busy
-    io.debug_hz      := false.B
-    io.debug_em_m2r  := false.B
-    io.debug_mw_rw   := false.B
-    io.debug_mw_rd   := 0.U
-    io.debug_mwrdat  := 0.U
+    io.debug_hb := hardware_busy
+    io.debug_hz := false.B
 
   } else {
     // --- 5-STAGE ---
@@ -163,12 +156,8 @@ class Top(c: Config) extends Module {
     regFile.io.wa        := mem_wb.io.rd_out
     regFile.io.wd        := write_back_data.asSInt
 
-    io.debug_hb      := hardware_busy
-    io.debug_hz      := hazard_stall
-    io.debug_em_m2r  := ex_mem.io.mem_to_reg_out
-    io.debug_mw_rw   := mem_wb.io.reg_write_out
-    io.debug_mw_rd   := mem_wb.io.rd_out
-    io.debug_mwrdat  := mem_wb.io.read_data_out
+    io.debug_hb := hardware_busy
+    io.debug_hz := hazard_stall
   }
 
   // Common
@@ -192,11 +181,9 @@ class Top(c: Config) extends Module {
   id_ex.io.funct3_in       := control.io.funct3
 
   io.debug_pc           := pc_reg.io.pc_out
-  io.debug_inst         := if_id.io.instruction_out
   io.debug_dcache_state := dcache.io.debug_state
   regFile.io.ra1        := id_inst(19, 15)
 
-  // Register file debug outputs x10–x24
   io.debug_x10 := regFile.io.debug_x10
   io.debug_x11 := regFile.io.debug_x11
   io.debug_x12 := regFile.io.debug_x12
@@ -215,5 +202,8 @@ class Top(c: Config) extends Module {
 
   io.debug_hits   := dcache.io.debug_hits
   io.debug_misses := dcache.io.debug_misses
-  io.debug_rdr    := dcache.io.debug_rdr
+  io.debug_c00    := dataRam.debug_c00
+  io.debug_c01    := dataRam.debug_c01
+  io.debug_c10    := dataRam.debug_c10
+  io.debug_c11    := dataRam.debug_c11
 }

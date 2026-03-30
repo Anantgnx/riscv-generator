@@ -8,7 +8,11 @@ import chisel3.util._
 // which guarantees correct initial values unlike Mem.write in a reset block.
 
 class DataRAM(c: Config) extends Module {
-  val io = IO(Flipped(new MemPort(c)))
+  val io        = IO(Flipped(new MemPort(c)))
+  val debug_c00 = IO(Output(UInt(c.xLen.W)))  // C[0][0] at word 40 = 0xA0
+  val debug_c01 = IO(Output(UInt(c.xLen.W)))  // C[0][1] at word 41 = 0xA4
+  val debug_c10 = IO(Output(UInt(c.xLen.W)))  // C[1][0] at word 42 = 0xA8
+  val debug_c11 = IO(Output(UInt(c.xLen.W)))  // C[1][1] at word 43 = 0xAC
 
   // --- Latency counter ---
   val mem_latency = c.memLatency.U
@@ -25,35 +29,26 @@ class DataRAM(c: Config) extends Module {
   val word_addr = (io.mem_addr >> 2).asUInt(8, 0)  // 9-bit word index (512 words)
 
   // --- Initial data per benchmark ---
-  // 512 words total. Unspecified words default to 0.
   def makeInit(): Vec[UInt] = {
     val init = scala.collection.mutable.ArrayBuffer.fill(512)(BigInt(0))
     c.benchmark match {
       case 0 =>
-        // 2x2 Matrix Multiply: C = A * B
         // A=[[1,2],[3,4]] at words 32-35 (0x080-0x08C)
         // B=[[5,6],[7,8]] at words 36-39 (0x090-0x09C)
-        // C=[[0,0],[0,0]] at words 40-43 (0x0A0-0x0AC) zero-initialized
+        // C=[[0,0],[0,0]] at words 40-43 (0x0A0-0x0AC)
         val A = Seq(1, 2, 3, 4)
         val B = Seq(5, 6, 7, 8)
         for (i <- 0 until 4) init(32 + i) = BigInt(A(i))
         for (i <- 0 until 4) init(36 + i) = BigInt(B(i))
-      // C stays zero (written by SW during execution)
-      // Expected: C=[[19,22],[43,50]], x10=C[1][1]=50
       case 1 =>
-        // Vector reduction: C[i] = 17 for i=0..15, expected sum = 272
-        // 16 words at 0x080 (word 32)
         for (i <- 0 until 16) init(32 + i) = BigInt(17)
       case 2 =>
-        // Sort array at word 32 (0x080): [8, 7, 6, 5, 4, 3, 2, 1]
         val s = Seq(8, 7, 6, 5, 4, 3, 2, 1)
         for (i <- 0 until 8) init(32 + i) = BigInt(s(i))
       case 3 =>
-        // Input array at word 32 (0x080): 4 repetitions of [0..7] (32 inputs)
         for (rep <- 0 until 4)
           for (v <- 0 until 8) init(32 + rep * 8 + v) = BigInt(v)
-      // Bins at word 64 (0x100): all 0 (already zero)
-      case _ => // no data needed
+      case _ =>
     }
     VecInit(init.map(_.U(c.xLen.W)).toSeq)
   }
@@ -67,4 +62,10 @@ class DataRAM(c: Config) extends Module {
   when(io.mem_write_en && io.mem_valid) {
     ram(word_addr) := io.mem_write_data
   }
+
+  // Debug: always read C[1][1] = word 43 = address 0xAC
+  debug_c00 := ram(40.U)
+  debug_c01 := ram(41.U)
+  debug_c10 := ram(42.U)
+  debug_c11 := ram(43.U)
 }
