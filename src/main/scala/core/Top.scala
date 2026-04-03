@@ -27,10 +27,14 @@ class Top(c: Config) extends Module {
     val debug_hz           = Output(Bool())
     val debug_hits         = Output(UInt(32.W))
     val debug_misses       = Output(UInt(32.W))
-    val debug_c00          = Output(UInt(32.W))
-    val debug_c01          = Output(UInt(32.W))
-    val debug_c10          = Output(UInt(32.W))
-    val debug_c11          = Output(UInt(32.W))
+    val debug_arr0         = Output(UInt(32.W))
+    val debug_arr1         = Output(UInt(32.W))
+    val debug_arr2         = Output(UInt(32.W))
+    val debug_arr3         = Output(UInt(32.W))
+    val debug_arr4         = Output(UInt(32.W))
+    val debug_arr5         = Output(UInt(32.W))
+    val debug_dmem0        = Output(UInt(32.W))
+    val debug_dmem1        = Output(UInt(32.W))
   })
 
   val write_back_data = WireDefault(0.U(c.xLen.W))
@@ -202,8 +206,12 @@ class Top(c: Config) extends Module {
 
   io.debug_hits   := dcache.io.debug_hits
   io.debug_misses := dcache.io.debug_misses
-  io.debug_c00    := dataRam.debug_c00
-  io.debug_c01    := dataRam.debug_c01
-  io.debug_c10    := dataRam.debug_c10
-  io.debug_c11    := dataRam.debug_c11
+  io.debug_arr0   := dcache.io.debug_arr0
+  io.debug_arr1   := dcache.io.debug_arr1
+  io.debug_arr2   := dcache.io.debug_arr2
+  io.debug_arr3   := dcache.io.debug_arr3
+  io.debug_arr4   := dcache.io.debug_arr4
+  io.debug_arr5   := dcache.io.debug_arr5
+  io.debug_dmem0  := dataRam.debug_dmem0
+  io.debug_dmem1  := dataRam.debug_dmem1
 }

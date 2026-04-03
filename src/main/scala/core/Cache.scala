@@ -12,8 +12,14 @@ class Cache(c: Config) extends Module {
     val cpu_read_data = Output(UInt(c.xLen.W))
     val stall_cpu = Output(Bool())
     val debug_state = Output(UInt(3.W))
-    val debug_hits = Output(UInt(32.W))
+    val debug_hits   = Output(UInt(32.W))
     val debug_misses = Output(UInt(32.W))
+    val debug_arr0   = Output(UInt(32.W))
+    val debug_arr1   = Output(UInt(32.W))
+    val debug_arr2   = Output(UInt(32.W))
+    val debug_arr3   = Output(UInt(32.W))
+    val debug_arr4   = Output(UInt(32.W))
+    val debug_arr5   = Output(UInt(32.W))
     val mem = new MemPort(c)
   })
 
@@ -38,6 +44,8 @@ class Cache(c: Config) extends Module {
   val addr_reg = Reg(UInt(index_w.W))
   val addr_tag_reg = Reg(UInt(tag_w.W))
   val full_addr_reg = Reg(UInt(32.W))
+  val write_data_reg = Reg(UInt(c.xLen.W))  // latched write data for write-hit writeback
+  val write_hit_reg = RegInit(false.B)       // true when sRefill is serving a write-hit writeback
   val replacement_way = RegInit(0.U(log2Up(c.cacheAssociativity).W))
 
   // --- Combinational tag/data lookup ---
@@ -60,43 +68,57 @@ class Cache(c: Config) extends Module {
       when(io.cpu_read_en || io.cpu_write_en) {
         when(hit) {
           when(io.cpu_write_en) {
+            // Update cache data array immediately
             for (i <- 0 until c.cacheAssociativity) {
               when(hits(i)) {
                 data_arrays(i)(addr_index) := io.cpu_write_data
               }
             }
+            // Enter sRefill to write-through to DataRAM
+            state          := sRefill
+            full_addr_reg  := io.cpu_addr
+            write_data_reg := io.cpu_write_data
+            write_hit_reg  := true.B
           }
         }.otherwise {
-          state := sRefill
-          addr_reg := addr_index
-          addr_tag_reg := addr_tag
+          // Read or write miss: enter sRefill to fetch from DataRAM
+          state         := sRefill
+          addr_reg      := addr_index
+          addr_tag_reg  := addr_tag
           full_addr_reg := io.cpu_addr
+          write_hit_reg := false.B
         }
       }
     }
     is(sRefill) {
       when(done) {
-        for (i <- 0 until c.cacheAssociativity) {
-          when(replacement_way === i.U) {
-            tag_arrays(i)(addr_reg) := addr_tag_reg
-            data_arrays(i)(addr_reg) := io.mem.mem_read_data
-            valid_bit_array(i)(addr_reg) := true.B
+        when(!write_hit_reg) {
+          // Normal refill: update cache with data from DataRAM
+          for (i <- 0 until c.cacheAssociativity) {
+            when(replacement_way === i.U) {
+              tag_arrays(i)(addr_reg)        := addr_tag_reg
+              data_arrays(i)(addr_reg)       := io.mem.mem_read_data
+              valid_bit_array(i)(addr_reg)   := true.B
+            }
           }
+          replacement_way := replacement_way + 1.U
         }
-        replacement_way := replacement_way + 1.U
-        state := sIdle
+        // write_hit_reg=true: DataRAM write-through complete, cache already updated
+        write_hit_reg := false.B
+        state         := sIdle
       }
     }
   }
 
   // --- Read data output ---
   val read_data_reg = RegInit(0.U(c.xLen.W))
-  when(state === sRefill && done) {
+  when(state === sRefill && done && !write_hit_reg) {
     read_data_reg := io.mem.mem_read_data
   }
   io.cpu_read_data := Mux(state === sIdle && hit, Mux1H(hits, data_out), read_data_reg)
 
   // --- Stall logic ---
+  // Stall during sRefill (both read-miss refill and write-hit writeback)
   val just_refilled = RegNext(state === sRefill && done, false.B)
   val request = (io.cpu_read_en || io.cpu_write_en) && !just_refilled
   val miss = (state === sIdle) && request && !hit
@@ -108,21 +130,25 @@ class Cache(c: Config) extends Module {
   val hit_count = RegInit(0.U(32.W))
   val miss_count = RegInit(0.U(32.W))
   when(state === sIdle && new_request) {
-    when(hit) {
-      hit_count := hit_count + 1.U
-    }
-      .otherwise {
-        miss_count := miss_count + 1.U
-      }
+    when(hit) { hit_count := hit_count + 1.U }
+      .otherwise { miss_count := miss_count + 1.U }
   }
   io.debug_hits := hit_count
   io.debug_misses := miss_count
 
   // Memory port
-  io.mem.mem_addr := full_addr_reg
-  io.mem.mem_read_en := (state === sRefill)
-  io.mem.mem_write_en := (state === sIdle && io.cpu_write_en && hit) || (state === sRefill && io.cpu_write_en && !hit)
-  io.mem.mem_write_data := io.cpu_write_data
+  io.mem.mem_addr      := full_addr_reg
+  io.mem.mem_read_en   := (state === sRefill) && !write_hit_reg
+  io.mem.mem_write_en  := (state === sRefill) && (write_hit_reg || io.cpu_write_en)
+  io.mem.mem_write_data := Mux(write_hit_reg, write_data_reg, io.cpu_write_data)
 
   io.debug_state := state.asUInt
+
+  // Debug: arr[0..5] live from cache data array (way 0, indices 32-37)
+  io.debug_arr0 := data_arrays(0)(32.U)
+  io.debug_arr1 := data_arrays(0)(33.U)
+  io.debug_arr2 := data_arrays(0)(34.U)
+  io.debug_arr3 := data_arrays(0)(35.U)
+  io.debug_arr4 := data_arrays(0)(36.U)
+  io.debug_arr5 := data_arrays(0)(37.U)
 }
