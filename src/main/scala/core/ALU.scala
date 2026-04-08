@@ -2,27 +2,32 @@ package core
 
 import chisel3._
 import chisel3.util._
-import chisel3.util.log2Up
 
 class ALU(c: Config) extends Module {
   val io = IO(new Bundle {
-      val op1 = Input(SInt(c.xLen.W)) // First operand
-      val op2 = Input(SInt(c.xLen.W)) // Second operand
-      val alu_control = Input(UInt(4.W)) // Alu opcode
-      val alu_result = Output(SInt(c.xLen.W)) // AlU output
-      val zero = Output(Bool()) // Zero flag
+    val op1         = Input(SInt(c.xLen.W))
+    val op2         = Input(SInt(c.xLen.W))
+    val alu_control = Input(UInt(4.W))
+    val alu_result  = Output(SInt(c.xLen.W))
+    val zero        = Output(Bool())
   })
+
+  val shamt = io.op2(4, 0).asUInt  // shift amount: lower 5 bits of op2
 
   io.alu_result := 0.S
 
-  switch(io.alu_control) { // switch statement
-    is(0.U) { io.alu_result := io.op1 + io.op2 }
-    is(2.U) { io.alu_result := io.op1 * io.op2 }
-    is(1.U) { io.alu_result := io.op1 - io.op2 }
-    is(3.U) { if (c.hasMul) {io.alu_result := (io.op1 * io.op2)(c.xLen - 1, 0).asSInt } }
-    is(4.U) { io.alu_result := Mux(io.op1 < io.op2, 1.S, 0.S) }
-    is(12.U) { io.alu_result := io.op1 | io.op2 }
-    is(14.U) { io.alu_result := io.op1 & io.op2 }
+  switch(io.alu_control) {
+    is(0.U)  { io.alu_result := io.op1 + io.op2 }                                      // ADD / ADDI
+    is(1.U)  { io.alu_result := io.op1 - io.op2 }                                      // SUB
+    is(2.U)  { io.alu_result := (io.op1.asUInt << shamt).asSInt }                      // SLL / SLLI
+    is(3.U)  { if (c.hasMul) io.alu_result := (io.op1 * io.op2)(c.xLen-1, 0).asSInt } // MUL
+    is(4.U)  { io.alu_result := Mux(io.op1 < io.op2, 1.S, 0.S) }                      // SLT / SLTI
+    is(6.U)  { io.alu_result := Mux(io.op1.asUInt < io.op2.asUInt, 1.S, 0.S) }        // SLTU / SLTIU
+    is(8.U)  { io.alu_result := (io.op1 ^ io.op2) }                                    // XOR / XORI
+    is(10.U) { io.alu_result := (io.op1.asUInt >> shamt).asSInt }                      // SRL / SRLI
+    is(11.U) { io.alu_result := (io.op1 >> shamt.asUInt) }                             // SRA / SRAI (arithmetic)
+    is(12.U) { io.alu_result := (io.op1 | io.op2) }                                    // OR  / ORI
+    is(14.U) { io.alu_result := (io.op1 & io.op2) }                                    // AND / ANDI
   }
 
   io.zero := io.alu_result === 0.S

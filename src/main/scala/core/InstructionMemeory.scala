@@ -203,12 +203,38 @@ class InstructionROM(c: Config) extends Module {
     "h00000013".U(32.W)  // 0x24: nop
   ))
 
+
+  // ---------------------------------------------------------------
+  // BENCHMARK 5: Tier 1 ISA Test
+  // Tests: XOR, OR, AND, SLL, SRL, SRA, SUB, SLTU, SLLI, SRLI
+  // Chain of dependent operations — x10=16 only if all ops correct
+  // ---------------------------------------------------------------
+  val bench5 = VecInit(Seq(
+    "h00F00593".U(32.W), // 0x00: addi x11,x0,15       # x11=15 (0b1111)
+    "h00200613".U(32.W), // 0x04: addi x12,x0,2        # x12=2
+    "h00600793".U(32.W), // 0x08: addi x15,x0,6        # x15=6  (0b0110)
+    "h00F5C6B3".U(32.W), // 0x0C: xor  x13,x11,x15    # 15^6=9
+    "h00F6E6B3".U(32.W), // 0x10: or   x13,x13,x15    # 9|6=15
+    "h00B6F6B3".U(32.W), // 0x14: and  x13,x13,x11    # 15&15=15
+    "h00C696B3".U(32.W), // 0x18: sll  x13,x13,x12    # 15<<2=60
+    "h00C6D6B3".U(32.W), // 0x1C: srl  x13,x13,x12    # 60>>2=15
+    "hFC400713".U(32.W), // 0x20: addi x14,x0,-60      # x14=-60
+    "h40C75733".U(32.W), // 0x24: sra  x14,x14,x12    # -60>>2=-15
+    "h40E686B3".U(32.W), // 0x28: sub  x13,x13,x14    # 15-(-15)=30
+    "h00B7B833".U(32.W), // 0x2C: sltu x16,x15,x11    # 6<15=1
+    "h00169693".U(32.W), // 0x30: slli x13,x13,1      # 30<<1=60
+    "h0026D693".U(32.W), // 0x34: srli x13,x13,2      # 60>>2=15
+    "h01068533".U(32.W), // 0x38: add  x10,x13,x16    # x10=15+1=16
+    "h00000013".U(32.W), // 0x3C: nop
+    "h00000013".U(32.W)  // 0x40: nop
+  ))
   val rom = c.benchmark match {
     case 0 => bench0
     case 1 => bench1
     case 2 => bench2
     case 3 => bench3
     case 4 => bench4
+    case 5 => bench5
     case _ => bench0
   }
 

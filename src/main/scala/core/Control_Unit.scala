@@ -2,7 +2,6 @@ package core
 
 import chisel3._
 import chisel3.util._
-import chisel3.util.log2Up
 
 class Control_Unit(c: Config) extends Module {
   val io = IO(new Bundle {
@@ -16,19 +15,19 @@ class Control_Unit(c: Config) extends Module {
     val ALU_op      = Output(UInt(4.W))
     val MemtoReg    = Output(Bool())
     val Branch      = Output(Bool())
-    val funct3      = Output(UInt(3.W))   // NEW: for BEQ vs BNE in Top
+    val funct3      = Output(UInt(3.W))
   })
 
   val opcode = io.instruction(6, 0)
   val funct3 = io.instruction(14, 12)
   val bit30  = io.instruction(30)
-  val bit25  = io.instruction(25)  // M-extension flag (MUL/DIV)
+  val bit25  = io.instruction(25)  // M-extension flag
 
-  val R_TYPE    = "b0110011".U
-  val LOAD      = "b0000011".U
-  val STORE     = "b0100011".U
-  val I_TYPE    = "b0010011".U
-  val BRANCH    = "b1100011".U
+  val R_TYPE = "b0110011".U
+  val LOAD   = "b0000011".U
+  val STORE  = "b0100011".U
+  val I_TYPE = "b0010011".U
+  val BRANCH = "b1100011".U
 
   io.ALU_src   := false.B
   io.Reg_write := false.B
@@ -37,37 +36,45 @@ class Control_Unit(c: Config) extends Module {
   io.MemtoReg  := false.B
   io.Branch    := false.B
   io.ALU_op    := 0.U
-  io.funct3    := funct3             // NEW: always pass through
+  io.funct3    := funct3
 
   when(!io.stall) {
     switch(opcode) {
       is(R_TYPE) {
-        io.ALU_src   := false.B
         io.Reg_write := true.B
-        // bit25=1 means M-extension (MUL): ALU_op=3
-        // otherwise standard: Cat(funct3, bit30)
-        io.ALU_op    := Mux(bit25, 3.U, Cat(funct3, bit30))
+        // M-ext MUL: bit25=1 → ALU_op=3
+        // Standard R-type: Cat(funct3, bit30)
+        io.ALU_op := Mux(bit25, 3.U, Cat(funct3, bit30))
       }
       is(LOAD) {
         io.ALU_src   := true.B
         io.Reg_write := true.B
         io.MemRead   := true.B
         io.MemtoReg  := true.B
-        io.ALU_op    := "b0000".U
+        io.ALU_op    := 0.U  // ADD: base + offset
       }
       is(STORE) {
         io.ALU_src   := true.B
         io.Mem_write := true.B
-        io.ALU_op    := "b0000".U
+        io.ALU_op    := 0.U  // ADD: base + offset
       }
       is(I_TYPE) {
         io.ALU_src   := true.B
         io.Reg_write := true.B
-        io.ALU_op    := Cat(funct3, 0.U(1.W))
+        // For shifts (funct3=001 SLL, funct3=101 SRL/SRA):
+        //   bit30=1 means SRAI → ALU_op=11, else SRLI → ALU_op=10
+        //   SLLI always bit30=0 → ALU_op=2
+        // For all other I-types: Cat(funct3, 0) matches R-type encoding
+        when(funct3 === "b101".U) {
+          // SRLI (bit30=0) → 10, SRAI (bit30=1) → 11
+          io.ALU_op := Cat(funct3, bit30)
+        }.otherwise {
+          io.ALU_op := Cat(funct3, 0.U(1.W))
+        }
       }
       is(BRANCH) {
         io.Branch := true.B
-        io.ALU_op := "b0001".U
+        io.ALU_op := 1.U  // SUB for BEQ/BNE comparison
       }
     }
   }
