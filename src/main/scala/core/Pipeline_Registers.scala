@@ -123,6 +123,7 @@ class pipeline_reg_id_ex(c: Config) extends Module {
   io.funct3_out       := funct3
 }
 
+// ── EX/MEM: added funct3 ──────────────────────────────────────────────────
 class pipeline_reg_ex_mem(c: Config) extends Module {
   val io = IO(new Bundle {
     val stall          = Input(Bool())
@@ -133,6 +134,7 @@ class pipeline_reg_ex_mem(c: Config) extends Module {
     val mem_write_in   = Input(Bool())
     val reg_write_in   = Input(Bool())
     val mem_to_reg_in  = Input(Bool())
+    val funct3_in      = Input(UInt(3.W))   // NEW
 
     val alu_result_out = Output(UInt(c.xLen.W))
     val write_data_out = Output(UInt(c.xLen.W))
@@ -141,6 +143,7 @@ class pipeline_reg_ex_mem(c: Config) extends Module {
     val mem_write_out  = Output(Bool())
     val reg_write_out  = Output(Bool())
     val mem_to_reg_out = Output(Bool())
+    val funct3_out     = Output(UInt(3.W))  // NEW
   })
 
   val alu_result = RegInit(0.U(c.xLen.W))
@@ -150,6 +153,7 @@ class pipeline_reg_ex_mem(c: Config) extends Module {
   val mem_w      = RegInit(false.B)
   val reg_w      = RegInit(false.B)
   val m2r        = RegInit(false.B)
+  val funct3     = RegInit(0.U(3.W))        // NEW
 
   when(!io.stall) {
     alu_result := io.alu_result_in
@@ -159,6 +163,7 @@ class pipeline_reg_ex_mem(c: Config) extends Module {
     mem_w      := io.mem_write_in
     reg_w      := io.reg_write_in
     m2r        := io.mem_to_reg_in
+    funct3     := io.funct3_in              // NEW
   }
 
   io.alu_result_out := alu_result
@@ -168,8 +173,10 @@ class pipeline_reg_ex_mem(c: Config) extends Module {
   io.mem_write_out  := mem_w
   io.reg_write_out  := reg_w
   io.mem_to_reg_out := m2r
+  io.funct3_out     := funct3               // NEW
 }
 
+// ── MEM/WB: added funct3 ─────────────────────────────────────────────────
 class pipeline_reg_mem_wb(c: Config) extends Module {
   val io = IO(new Bundle {
     val stall          = Input(Bool())
@@ -178,12 +185,14 @@ class pipeline_reg_mem_wb(c: Config) extends Module {
     val rd_in          = Input(UInt(log2Up(c.numRegs).W))
     val reg_write_in   = Input(Bool())
     val mem_to_reg_in  = Input(Bool())
+    val funct3_in      = Input(UInt(3.W))   // NEW
 
     val read_data_out  = Output(UInt(c.xLen.W))
     val alu_result_out = Output(UInt(c.xLen.W))
     val rd_out         = Output(UInt(log2Up(c.numRegs).W))
     val reg_write_out  = Output(Bool())
     val mem_to_reg_out = Output(Bool())
+    val funct3_out     = Output(UInt(3.W))  // NEW
   })
 
   val read_data  = RegInit(0.U(c.xLen.W))
@@ -191,6 +200,7 @@ class pipeline_reg_mem_wb(c: Config) extends Module {
   val rd         = RegInit(0.U(log2Up(c.numRegs).W))
   val reg_w      = RegInit(false.B)
   val m2r        = RegInit(false.B)
+  val funct3     = RegInit(0.U(3.W))        // NEW
 
   when(!io.stall) {
     read_data  := io.read_data_in
@@ -198,6 +208,7 @@ class pipeline_reg_mem_wb(c: Config) extends Module {
     rd         := io.rd_in
     reg_w      := io.reg_write_in
     m2r        := io.mem_to_reg_in
+    funct3     := io.funct3_in              // NEW
   }
 
   io.read_data_out  := read_data
@@ -205,4 +216,5 @@ class pipeline_reg_mem_wb(c: Config) extends Module {
   io.rd_out         := rd
   io.reg_write_out  := reg_w
   io.mem_to_reg_out := m2r
+  io.funct3_out     := funct3               // NEW
 }

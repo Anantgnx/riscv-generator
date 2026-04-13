@@ -21,13 +21,17 @@ class Control_Unit(c: Config) extends Module {
   val opcode = io.instruction(6, 0)
   val funct3 = io.instruction(14, 12)
   val bit30  = io.instruction(30)
-  val bit25  = io.instruction(25)  // M-extension flag
+  val bit25  = io.instruction(25)
 
   val R_TYPE = "b0110011".U
   val LOAD   = "b0000011".U
   val STORE  = "b0100011".U
   val I_TYPE = "b0010011".U
   val BRANCH = "b1100011".U
+  val LUI    = "b0110111".U
+  val AUIPC  = "b0010111".U
+  val JAL    = "b1101111".U
+  val JALR   = "b1100111".U
 
   io.ALU_src   := false.B
   io.Reg_write := false.B
@@ -42,39 +46,61 @@ class Control_Unit(c: Config) extends Module {
     switch(opcode) {
       is(R_TYPE) {
         io.Reg_write := true.B
-        // M-ext MUL: bit25=1 → ALU_op=3
-        // Standard R-type: Cat(funct3, bit30)
-        io.ALU_op := Mux(bit25, 3.U, Cat(funct3, bit30))
+        io.ALU_op    := Mux(bit25, 3.U, Cat(funct3, bit30))
       }
       is(LOAD) {
         io.ALU_src   := true.B
         io.Reg_write := true.B
         io.MemRead   := true.B
         io.MemtoReg  := true.B
-        io.ALU_op    := 0.U  // ADD: base + offset
+        io.ALU_op    := 0.U
       }
       is(STORE) {
         io.ALU_src   := true.B
         io.Mem_write := true.B
-        io.ALU_op    := 0.U  // ADD: base + offset
+        io.ALU_op    := 0.U
       }
       is(I_TYPE) {
         io.ALU_src   := true.B
         io.Reg_write := true.B
-        // For shifts (funct3=001 SLL, funct3=101 SRL/SRA):
-        //   bit30=1 means SRAI → ALU_op=11, else SRLI → ALU_op=10
-        //   SLLI always bit30=0 → ALU_op=2
-        // For all other I-types: Cat(funct3, 0) matches R-type encoding
         when(funct3 === "b101".U) {
-          // SRLI (bit30=0) → 10, SRAI (bit30=1) → 11
-          io.ALU_op := Cat(funct3, bit30)
+          io.ALU_op := Cat(funct3, bit30)  // SRLI=10, SRAI=11
         }.otherwise {
           io.ALU_op := Cat(funct3, 0.U(1.W))
         }
       }
       is(BRANCH) {
         io.Branch := true.B
-        io.ALU_op := 1.U  // SUB for BEQ/BNE comparison
+        io.ALU_op := MuxLookup(funct3, 1.U)(Seq(
+          "b000".U -> 1.U,   // BEQ  → SUB
+          "b001".U -> 1.U,   // BNE  → SUB
+          "b100".U -> 4.U,   // BLT  → SLT
+          "b101".U -> 4.U,   // BGE  → SLT
+          "b110".U -> 6.U,   // BLTU → SLTU
+          "b111".U -> 6.U    // BGEU → SLTU
+        ))
+      }
+      is(LUI) {
+        io.ALU_src   := true.B  // use immediate as op2
+        io.Reg_write := true.B
+        io.ALU_op    := 15.U    // pass-through op2 (= imm<<12 from ImmGen)
+        // op1 = x0 = 0, so result = imm<<12
+      }
+      is(AUIPC) {
+        io.ALU_src   := true.B  // use immediate as op2
+        io.Reg_write := true.B
+        io.ALU_op    := 13.U    // PC + op2 (handled specially in Top.scala)
+      }
+      is(JAL) {
+        io.Reg_write := true.B
+        io.ALU_op    := 9.U     // rd=PC+4 (op1=PC injected by Top, result=PC+4)
+        // PC target = PC + J-imm handled in Top.scala
+      }
+      is(JALR) {
+        io.ALU_src   := true.B  // use imm as op2 (for target computation in Top)
+        io.Reg_write := true.B
+        io.ALU_op    := 7.U     // rd=PC+4 (op1=PC injected by Top, result=PC+4)
+        // PC target = (rs1 + imm) & ~1 handled in Top.scala
       }
     }
   }

@@ -12,6 +12,7 @@ class RegisterFile(c: Config) extends Module {
     val wd        = Input(SInt(c.xLen.W))
     val rd1       = Output(SInt(c.xLen.W))
     val rd2       = Output(SInt(c.xLen.W))
+    val debug_x1  = Output(UInt(c.xLen.W))
     val debug_x10 = Output(UInt(c.xLen.W))
     val debug_x11 = Output(UInt(c.xLen.W))
     val debug_x12 = Output(UInt(c.xLen.W))
@@ -41,6 +42,7 @@ class RegisterFile(c: Config) extends Module {
     registers(io.wa) := io.wd
   }
 
+  io.debug_x1  := registers(1).asUInt
   io.debug_x10 := registers(10).asUInt
   io.debug_x11 := registers(11).asUInt
   io.debug_x12 := registers(12).asUInt

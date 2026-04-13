@@ -8,7 +8,8 @@ class Cache(c: Config) extends Module {
     val cpu_addr = Input(UInt(c.xLen.W))
     val cpu_write_data = Input(UInt(c.xLen.W))
     val cpu_read_en = Input(Bool())
-    val cpu_write_en = Input(Bool())
+    val cpu_write_en  = Input(Bool())
+    val cpu_byte_en   = Input(UInt(4.W))   // byte enables from pipeline
     val cpu_read_data = Output(UInt(c.xLen.W))
     val stall_cpu = Output(Bool())
     val debug_state = Output(UInt(3.W))
@@ -24,7 +25,8 @@ class Cache(c: Config) extends Module {
   })
 
   // --- Parameters & Address Decoding ---
-  val num_sets = ((c.cacheSizeKB * 1024) / (c.xLen / 8) / c.cacheAssociativity)
+  // numSets overrides cacheSizeKB calculation for sub-1KB caches
+  val num_sets = c.numSets.getOrElse((c.cacheSizeKB * 1024) / (c.xLen / 8) / c.cacheAssociativity)
   val index_w = log2Up(num_sets)
   val offset_w = log2Up(c.xLen / 8)
   val tag_w = 32 - (offset_w + index_w)
@@ -45,6 +47,7 @@ class Cache(c: Config) extends Module {
   val addr_tag_reg = Reg(UInt(tag_w.W))
   val full_addr_reg = Reg(UInt(32.W))
   val write_data_reg = Reg(UInt(c.xLen.W))  // latched write data for write-hit writeback
+  val byte_en_reg    = RegInit("b1111".U(4.W)) // latched byte enables, captured when entering sRefill
   val write_hit_reg = RegInit(false.B)       // true when sRefill is serving a write-hit writeback
   val replacement_way = RegInit(0.U(log2Up(c.cacheAssociativity).W))
 
@@ -68,17 +71,33 @@ class Cache(c: Config) extends Module {
       when(io.cpu_read_en || io.cpu_write_en) {
         when(hit) {
           when(io.cpu_write_en) {
-            // Update cache data array immediately
-            for (i <- 0 until c.cacheAssociativity) {
-              when(hits(i)) {
-                data_arrays(i)(addr_index) := io.cpu_write_data
+            when(io.cpu_byte_en === "b1111".U) {
+              // Full word write-hit: update cache and write-through to DataRAM
+              for (i <- 0 until c.cacheAssociativity) {
+                when(hits(i)) {
+                  data_arrays(i)(addr_index) := io.cpu_write_data
+                }
               }
+              state          := sRefill
+              full_addr_reg  := io.cpu_addr
+              write_data_reg := io.cpu_write_data
+              byte_en_reg    := io.cpu_byte_en
+              write_hit_reg  := true.B
+            }.otherwise {
+              // Partial write-hit (SB/SH): invalidate cache line so next
+              // read refills from DataRAM which has the correct merged value
+              for (i <- 0 until c.cacheAssociativity) {
+                when(hits(i)) {
+                  valid_bit_array(i)(addr_index) := false.B
+                }
+              }
+              // Still write-through to DataRAM with byte enables
+              state          := sRefill
+              full_addr_reg  := io.cpu_addr
+              write_data_reg := io.cpu_write_data
+              byte_en_reg    := io.cpu_byte_en
+              write_hit_reg  := true.B
             }
-            // Enter sRefill to write-through to DataRAM
-            state          := sRefill
-            full_addr_reg  := io.cpu_addr
-            write_data_reg := io.cpu_write_data
-            write_hit_reg  := true.B
           }
         }.otherwise {
           // Read or write miss: enter sRefill to fetch from DataRAM
@@ -138,9 +157,10 @@ class Cache(c: Config) extends Module {
 
   // Memory port
   io.mem.mem_addr      := full_addr_reg
-  io.mem.mem_read_en   := (state === sRefill) && !write_hit_reg
-  io.mem.mem_write_en  := (state === sRefill) && (write_hit_reg || io.cpu_write_en)
+  io.mem.mem_read_en    := (state === sRefill) && !write_hit_reg
+  io.mem.mem_write_en   := (state === sRefill) && (write_hit_reg || io.cpu_write_en)
   io.mem.mem_write_data := Mux(write_hit_reg, write_data_reg, io.cpu_write_data)
+  io.mem.mem_byte_en    := byte_en_reg     // use registered value (captured on sRefill entry)
 
   io.debug_state := state.asUInt
 

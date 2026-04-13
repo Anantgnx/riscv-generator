@@ -7,7 +7,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 class TopTest extends AnyFlatSpec with ChiselScalatestTester {
 
   // Increase per-benchmark if needed, but keep low to avoid 48min runs
-  val maxCycles = 2000
+  val maxCycles = 3000
 
   def runBench(benchId: Int, expected: BigInt, name: String, desc: String): Unit = {
     val cfg = Config(benchmark = benchId, hasMul = true, memLatency = 10)

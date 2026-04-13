@@ -2,6 +2,7 @@ package core
 
 import chisel3._
 import chisel3.util._
+import chisel3.util.experimental.loadMemoryFromFileInline
 
 // Instruction ROM — benchmark selected via c.benchmark
 //
@@ -228,6 +229,107 @@ class InstructionROM(c: Config) extends Module {
     "h00000013".U(32.W), // 0x3C: nop
     "h00000013".U(32.W)  // 0x40: nop
   ))
+
+  // ---------------------------------------------------------------
+  // BENCHMARK 6: Tier 2 ISA Test
+  // Tests: LUI, AUIPC, BLT, BGE, BLTU, BGEU
+  // Expected x10 = 4106 = 4096(LUI) + 1(BLT) + 2(BGE) + 3(BLTU) + 4(BGEU)
+  // Each branch skips x_=99 and lands on x_=N, confirming branch taken
+  // ---------------------------------------------------------------
+  val bench6 = VecInit(Seq(
+    "h000015B7".U(32.W), // 0x00: lui   x11,1          # x11=4096
+    "h00000617".U(32.W), // 0x04: auipc x12,0          # x12=PC=4
+    "h00500693".U(32.W), // 0x08: addi  x13,x0,5
+    "h00A00713".U(32.W), // 0x0C: addi  x14,x0,10
+    "h00E6C463".U(32.W), // 0x10: blt   x13,x14,+8     # 5<10 → skip 99
+    "h06300793".U(32.W), // 0x14: addi  x15,x0,99      # SKIPPED
+    "h00100793".U(32.W), // 0x18: addi  x15,x0,1       # x15=1
+    "h00D75463".U(32.W), // 0x1C: bge   x14,x13,+8     # 10>=5 → skip 99
+    "h06300813".U(32.W), // 0x20: addi  x16,x0,99      # SKIPPED
+    "h00200813".U(32.W), // 0x24: addi  x16,x0,2       # x16=2
+    "h00E6E463".U(32.W), // 0x28: bltu  x13,x14,+8     # 5<10u → skip 99
+    "h06300893".U(32.W), // 0x2C: addi  x17,x0,99      # SKIPPED
+    "h00300893".U(32.W), // 0x30: addi  x17,x0,3       # x17=3
+    "h00D77463".U(32.W), // 0x34: bgeu  x14,x13,+8     # 10>=5u → skip 99
+    "h06300913".U(32.W), // 0x38: addi  x18,x0,99      # SKIPPED
+    "h00400913".U(32.W), // 0x3C: addi  x18,x0,4       # x18=4
+    "h00F58533".U(32.W), // 0x40: add   x10,x11,x15
+    "h01050533".U(32.W), // 0x44: add   x10,x10,x16
+    "h01150533".U(32.W), // 0x48: add   x10,x10,x17
+    "h01250533".U(32.W), // 0x4C: add   x10,x10,x18
+    "h00000013".U(32.W), // 0x50: nop
+    "h00000013".U(32.W)  // 0x54: nop
+  ))
+
+  // ---------------------------------------------------------------
+  // BENCHMARK 7: Tier 3 JAL/JALR Test
+  // Tests function call and return:
+  //   main calls func(5) via JAL, func returns 15 via JALR
+  //   after return: x10 += 100 → x10 = 115
+  // Expected: x10=115, x1(ra)=12(0x0C)
+  // ---------------------------------------------------------------
+  val bench7 = VecInit(Seq(
+    "h00000513".U(32.W), // 0x00: addi x10,x0,0      # x10=0
+    "h00500593".U(32.W), // 0x04: addi x11,x0,5      # arg x11=5
+    "h010000EF".U(32.W), // 0x08: jal  x1,+16        # call func@0x18, ra=0x0C
+    "h06450513".U(32.W), // 0x0C: addi x10,x10,100  # x10 += 100 after return
+    "h00000013".U(32.W), // 0x10: nop
+    "h00000013".U(32.W), // 0x14: nop
+    "h00058513".U(32.W), // 0x18: addi x10,x11,0     # func: x10=arg=5
+    "h00A50513".U(32.W), // 0x1C: addi x10,x10,10    # x10=15
+    "h00008067".U(32.W), // 0x20: jalr x0,x1,0       # return to ra(0x0C)
+    "h00000013".U(32.W)  // 0x24: nop
+  ))
+
+
+  // ---------------------------------------------------------------
+  // BENCHMARK 8: Tier 3 Part 2 — Byte/Halfword Memory Ops
+  // Tests: SW, LB, LBU, LH, LHU, SB, SH, LW
+  // x15=0xAABB11DD (after SB), x16=0x005511DD (after SH)
+  // x10=39523 (checksum: LBU+LB+LH+LHU)
+  // ---------------------------------------------------------------
+  val bench8 = VecInit(Seq(
+    "h08000A13".U(32.W), // 0x00: addi x20,x0,0x80
+    "hAABBDAB7".U(32.W), // 0x04: lui  x21,0xAABBD
+    "hCDDA8A93".U(32.W), // 0x08: addi x21,x21,-0x323  # x21=0xAABBCCDD
+    "h015A2023".U(32.W), // 0x0C: sw   x21,0(x20)
+    "h00000013".U(32.W), // 0x10: nop
+    "h00000013".U(32.W), // 0x14: nop
+    "h000A0503".U(32.W), // 0x18: lb   x10,0(x20)  # -35
+    "h00000013".U(32.W), // 0x1C: nop
+    "h00000013".U(32.W), // 0x20: nop
+    "h000A4583".U(32.W), // 0x24: lbu  x11,0(x20)  # 221
+    "h00000013".U(32.W), // 0x28: nop
+    "h00000013".U(32.W), // 0x2C: nop
+    "h001A0603".U(32.W), // 0x30: lb   x12,1(x20)  # -52
+    "h00000013".U(32.W), // 0x34: nop
+    "h00000013".U(32.W), // 0x38: nop
+    "h000A1683".U(32.W), // 0x3C: lh   x13,0(x20)  # -13091
+    "h00000013".U(32.W), // 0x40: nop
+    "h00000013".U(32.W), // 0x44: nop
+    "h000A5703".U(32.W), // 0x48: lhu  x14,0(x20)  # 52445
+    "h00000013".U(32.W), // 0x4C: nop
+    "h00000013".U(32.W), // 0x50: nop
+    "h01100B13".U(32.W), // 0x54: addi x22,x0,0x11
+    "h016A00A3".U(32.W), // 0x58: sb   x22,1(x20)  # byte1=0x11 → 0xAABB11DD
+    "h00000013".U(32.W), // 0x5C: nop
+    "h00000013".U(32.W), // 0x60: nop
+    "h000A2783".U(32.W), // 0x64: lw   x15,0(x20)  # expect 0xAABB11DD
+    "h00000013".U(32.W), // 0x68: nop
+    "h00000013".U(32.W), // 0x6C: nop
+    "h05500B93".U(32.W), // 0x70: addi x23,x0,0x55
+    "h017A1123".U(32.W), // 0x74: sh   x23,2(x20)  # half at offset 2 → 0x005511DD
+    "h00000013".U(32.W), // 0x78: nop
+    "h00000013".U(32.W), // 0x7C: nop
+    "h000A2803".U(32.W), // 0x80: lw   x16,0(x20)  # expect 0x005511DD
+    "h00000013".U(32.W), // 0x84: nop
+    "h00000013".U(32.W), // 0x88: nop
+    "h00C58533".U(32.W), // 0x8C: add  x10,x11,x12  # 221+(-52)=169
+    "h00D50533".U(32.W), // 0x90: add  x10,x10,x13  # 169+(-13091)=-12922
+    "h00E50533".U(32.W), // 0x94: add  x10,x10,x14  # -12922+52445=39523
+    "h00000013".U(32.W), // 0x98: nop
+    "h00000013".U(32.W)  // 0x9C: nop
+  ))
   val rom = c.benchmark match {
     case 0 => bench0
     case 1 => bench1
@@ -235,13 +337,28 @@ class InstructionROM(c: Config) extends Module {
     case 3 => bench3
     case 4 => bench4
     case 5 => bench5
+    case 6 => bench6
+    case 7 => bench7
+    case 8 => bench8
     case _ => bench0
   }
 
-  val word_addr = (io.pc >> 2).asUInt
+  // Hex-file ROM for compiled C benchmarks (bench >= 9)
+  // 4096 words = 16KB — enough for Dhrystone (~4KB) and Coremark (~16KB)
+  val hex_rom = SyncReadMem(32768, UInt(32.W))
+  if (c.benchmark >= 9 && c.hexFile.nonEmpty) {
+    loadMemoryFromFileInline(hex_rom, c.hexFile)
+  }
+
+  val word_addr = (io.pc >> 2)
+
   io.inst_out := Mux(
-    word_addr < rom.length.U,
-    rom(word_addr(log2Ceil(rom.length) - 1, 0)),
-    0.U
+    c.benchmark.U >= 9.U,
+    hex_rom(word_addr(11, 0)),
+    Mux(
+      word_addr < rom.length.U,
+      rom(word_addr(log2Ceil(rom.length) - 1, 0)),
+      0.U
+    )
   )
 }
